@@ -1,8 +1,8 @@
 package org.example.controller;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+
+import org.example.ServerController;
 
 import java.sql.Statement;
 
@@ -20,7 +22,11 @@ public class DbController {
     private static Properties loadProps() throws IOException {
         try {
             logController.writeSimpleLog("SYSTEM:conectarBanco", "Read database props", true);
-            FileReader input = new FileReader("props.properties");
+            InputStream input = ServerController.class.getClassLoader().getResourceAsStream("props.properties");
+            if (input == null) {
+                logController.writeSimpleLog("SYSTEM:conectarBanco", "File not found", true);
+                return null;
+            }
             Properties props = new Properties();
             props.load(input);
             logController.writeSimpleLog("SYSTEM:conectarBanco", "Database props read sucessfull", true);

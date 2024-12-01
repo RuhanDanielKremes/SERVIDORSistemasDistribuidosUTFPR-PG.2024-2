@@ -5,7 +5,6 @@ import java.net.*;
 import org.example.controller.LogController;
 import org.example.controller.OperacaoController;
 import org.example.model.Json;
-import org.example.model.Json2;
 import org.example.model.JsonReturn;
 
 import com.google.gson.Gson;
@@ -87,9 +86,9 @@ public class ServerController {
             logController.writeSimpleLog("SYSTEM: READ JSON", "Getting file, if Json proced or if on the protocol, else Abort", true);
             Gson gson = new Gson();
             try {
-                logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json2.class).toString());
+                logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json.class).toString());
                 logController.writeSimpleLog("SYSTEM: READ JSON", "Passing the json to a class", true);
-                Json2 json = gson.fromJson(jsonInput, Json2.class);
+                Json json = gson.fromJson(jsonInput, Json.class);
                 System.out.println("input: " + json.toString());
                 logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
                 OperacaoController operacaoController = new OperacaoController();

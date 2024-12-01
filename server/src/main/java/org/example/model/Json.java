@@ -87,4 +87,17 @@ public class Json {
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
+
+    @Override
+    public String toString() {
+        return "Json{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", ra='" + ra + '\'' +
+                ", senha='" + senha + '\'' +
+                ", operacao='" + operacao + '\'' +
+                ", token='" + token + '\'' +
+                ", mensagem='" + mensagem + '\'' +
+                '}';
+    }
 }

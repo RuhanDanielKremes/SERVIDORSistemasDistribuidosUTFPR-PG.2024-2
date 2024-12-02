@@ -18,6 +18,12 @@ public class OperacaoController{
             case "cadastrarUsuario":
                 logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
                 return (cadastro(json));
+            case "login":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (login(json));
+            case "logout":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (logout(json));
             default:
                 logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol not found!", true);
                 JsonReturn jsonReturn = new JsonReturn();
@@ -126,6 +132,7 @@ public class OperacaoController{
         User user = new User();
         user.setRa(json.getRa());
         user.setPassword(json.getSenha());
+        jsonReturn.setOperation(json.getOperacao());
 
         if (user.getRa().length() != 7) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "RA invalido", true);
@@ -160,8 +167,6 @@ public class OperacaoController{
                 jsonReturn.setMessage("Credenciais incorretas.");
                 return jsonReturn;
             }else{
-                rs.first();
-                rs.next();
                 if (rs.getString("password").equals(user.getPassword())) {
                     logController.writeSimpleLog("login -> 200", "Usuario logado com sucesso", true);
                     jsonReturn.setStatus(200);
@@ -179,7 +184,7 @@ public class OperacaoController{
                 }
             }   
         } catch (Exception e) {
-            logController.writeSimpleLog("login -> 401", "Erro na conexão com o banco de dados", true);
+            logController.writeSimpleLog("login -> 401", "Erro na conexão com o banco de dados" + e.getMessage(), true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
             jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");

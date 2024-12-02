@@ -29,16 +29,17 @@ public class ServerController {
              serverSocket = new ServerSocket(port); 
              System.out.println ("Connection Socket Created");
              try { 
-                  while (serverContinue)
+                System.out.println ("Waiting for Connection");
+                while (serverContinue)
                      {
                       serverSocket.setSoTimeout(10000);
-                      System.out.println ("Waiting for Connection");
+                    //   System.out.println ("Waiting for Connection");
                       try {
                            new ServerController (serverSocket.accept()); 
                           }
                       catch (SocketTimeoutException ste)
                           {
-                           System.out.println ("Timeout Occurred");
+                        //    System.out.println ("Timeout Occurred");
                           }
                      }
                  } 
@@ -69,99 +70,120 @@ public class ServerController {
     
      private ServerController (Socket clientSoc){
         clientSocket = clientSoc;
-        new Thread(this::run).start();
+        try {
+            new Thread(this::run).start();
+        } catch (Exception e) {
+            System.err.println("Problem with Communication Server" + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
     }
     
     public void run(){
-        BufferedReader reader = null;
-        PrintWriter writer = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            String jsonInput = reader.readLine();
-        try {
-            logController.writeSimpleLog("SYSTEM: Server", "New Communication Thread Started", true);
-            System.out.println ("New Communication Thread Started");
-            JsonReturn jsonReturn = new JsonReturn();
-            logController.writeSimpleLog("SYSTEM: READ JSON", "Getting file, if Json proced or if on the protocol, else Abort", true);
-            Gson gson = new Gson();
-            try {
-                logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json.class).toString());
-                logController.writeSimpleLog("SYSTEM: READ JSON", "Passing the json to a class", true);
-                Json json = gson.fromJson(jsonInput, Json.class);
-                System.out.println("input: " + json.toString());
-                logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
-                OperacaoController operacaoController = new OperacaoController();
-                Json json1 = new Json();
-                json1.setOperacao(json.getOperacao());
-                json1.setRa(json.getRa());
-                json1.setSenha(json.getSenha());
-                json1.setNome(json.getNome());
-                jsonReturn = operacaoController.findOperation(json1);
-                System.out.println(jsonReturn.toString());
-                String jsonString = gson.toJson(jsonReturn);
-                try (FileWriter writer2 = new FileWriter("json.json", false)) {
-                    writer2.write(jsonString);
-                } catch (Exception e) {
-                    System.out.println("Error! Json do not pass to a class" + e.getMessage());
-                }
-                writer.println(jsonString);
-            } catch (Exception e) {
-                logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
-                jsonReturn.setStatus(401);
-                jsonReturn.setOperation("Json");
-                jsonReturn.setMessage("Não foi possível ler o json recebido");
-                System.out.println("Error! Json do not pass to a class" + e.getMessage());
-                try (FileWriter writer2 = new FileWriter("json.json", false)) {
-                    writer2.write(jsonReturn.toString());
-                } catch (Exception e2) {
-                    System.out.println("Error! Json do not pass to a class" + e2.getMessage());
-                }
-                String jsonString = gson.toJson(jsonReturn);
-                writer.println(jsonString);
-            }
-        } catch (IOException e) {
-            System.err.println("Problem with Communication Server");
-            System.exit(1);
-        }
-            try { 
-
-                String inputLine; 
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                while ((inputLine = in.readLine()) != null) { 
-                    System.out.println ("Server: " + inputLine); 
-                    switch (inputLine) {
-                        case "?":
-                            inputLine = new String ("\"Bye.\" ends Client, " + "\"End Server.\" ends Server");
-                            break;
-                        case "Bye.":
-                            break;
-                        case "End Server.":
-                            serverContinue = false;
-                            break;
-                        default:
-                            break;
+        try{
+            while (true) {
+                BufferedReader reader = null;
+                PrintWriter writer = null;
+                PushbackInputStream in = new PushbackInputStream(clientSocket.getInputStream());
+                try {
+                    if (in.available() > 0) {
+                        int data = in.read();
+                        if (data == -1) {
+                            clientSocket.close();
+                        } else {
+                            in.unread(data);
+                        }
                     }
-                    if (inputLine.equals("?")) 
-                        inputLine = new String ("\"Bye.\" ends Client, " + "\"End Server.\" ends Server");
-                    out.println(inputLine);
-                    
-                    if (inputLine.equals("Bye.")) 
-                        break; 
-                    if (inputLine.equals("End Server.")) 
-                        serverContinue = false; 
-                }     
-                out.close(); 
-                in.close(); 
-                clientSocket.close(); 
-            }catch (IOException e){ 
-                System.err.println("Problem with Communication Server");
-                System.exit(1); 
-            } 
-        } catch (IOException e) {
-            System.err.println("Problem with log");
-            System.exit(1);
+                } catch (Exception e) {
+                    System.err.println("Conexão fechada pelo cliente:" + e.getMessage());
+                    clientSocket.close();
+                }                
+                reader = new BufferedReader(new InputStreamReader(in));
+                writer = new PrintWriter(clientSocket.getOutputStream(), true);
+                String jsonInput;
+                JsonReturn jsonReturn = new JsonReturn();
+                try {
+                    if ((jsonInput = reader.readLine()) != null) {
+                        logController.writeSimpleLog("SYSTEM: Server", "New Communication Thread Started", true);
+                        System.out.println ("New Communication Thread Started");
+                        System.out.println("input: " + jsonInput);
+                        logController.writeSimpleLog("SYSTEM: READ JSON", "Getting file, if Json proced or if on the protocol, else Abort", true);
+                        Gson gson = new Gson();
+                        try {
+                            logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json.class).toString());
+                            logController.writeSimpleLog("SYSTEM: READ JSON", "Passing the json to a class", true);
+                            Json json = gson.fromJson(jsonInput, Json.class);
+                            System.out.println("input: " + json.toString());
+                            logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
+                            OperacaoController operacaoController = new OperacaoController();
+                            Json json1 = new Json();
+                            json1.setOperacao(json.getOperacao());
+                            json1.setRa(json.getRa());
+                            json1.setSenha(json.getSenha());
+                            json1.setNome(json.getNome());
+                            jsonReturn = operacaoController.findOperation(json1);
+                            System.out.println(jsonReturn.toString());
+                            String jsonString = gson.toJson(jsonReturn);
+                            writer.println(jsonString);
+                        } catch (Exception e) {
+                            logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
+                            jsonReturn.setStatus(401);
+                            jsonReturn.setOperation("Json");
+                            jsonReturn.setMessage("Nao foi possivel ler o json recebido");
+                            System.out.println("Error! Json do not pass to a class" + e.getMessage());
+                            String jsonString = gson.toJson(jsonReturn);
+                            writer.println(jsonString);
+                        }
+                    }else {
+                        logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class", true);
+                        jsonReturn.setStatus(401);
+                        jsonReturn.setOperation("Json");
+                        jsonReturn.setMessage("Nao foi possivel ler o json recebido");
+                    }
+                } catch (NullPointerException npe) {
+                    logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + npe.getMessage(), true);
+                    System.err.println("Problem with Communication Server");
+                    clientSocket.close();
+                } catch (Exception e) {
+                    logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
+                    System.err.println("Problem with Communication Server");
+                    clientSocket.close();
+                }
+            }
+        }catch (NullPointerException npe) {
+            try {
+                logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + npe.getMessage(), true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.err.println("Problem with Communication Server" + npe.getMessage());
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            try {
+                logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            System.err.println("Problem with Communication Server" + e.getMessage());
+            try {
+                clientSocket.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }finally {
+            try {
+                clientSocket.close();
+            } catch (IOException ioe) {
+                System.err.println("Problem with Communication Server" + ioe.getMessage());
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

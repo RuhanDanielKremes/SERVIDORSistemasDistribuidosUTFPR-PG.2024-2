@@ -1,24 +1,12 @@
 package org.example.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Json {
     
-     @SerializedName("id")
     private int id;
-
-    @SerializedName("name")
     private String nome;
-
-    @SerializedName("ra")
     private String ra;
-
-    @SerializedName("password")
     private String senha;
-
-    @SerializedName("role")
     private String operacao;
-
     private String token;
     private String mensagem;
 

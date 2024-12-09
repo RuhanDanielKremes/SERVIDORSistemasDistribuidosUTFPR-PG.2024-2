@@ -4,14 +4,14 @@ public class JsonReturn {
  
     private int status;
     private String token;
-    private String message;
-    private String operation;
+    private String mensagem;
+    private String operacao;
 
     public JsonReturn(){
         this.status = 0;
         this.token = "";
-        this.message = "";
-        this.operation = "";
+        this.mensagem = "";
+        this.operacao = "";
     }
 
     public void setStatus(int status) {
@@ -22,12 +22,12 @@ public class JsonReturn {
         this.token = token;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessage(String mensagem) {
+        this.mensagem = mensagem;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
+    public void setOperation(String operacao) {
+        this.operacao = operacao;
     }
 
     public int getStatus() {
@@ -39,20 +39,20 @@ public class JsonReturn {
     }
 
     public String getMessage() {
-        return message;
+        return mensagem;
     }
 
     public String getOperation() {
-        return operation;
+        return operacao;
     }
     
     @Override
     public String toString() {
-        switch (this.operation) {
+        switch (this.operacao) {
             case "cadastrarUsuario":
                 return "{status=" + '\'' + status + '\'' + 
-                        ", operacao=" + '\'' + operation + '\'' +
-                        ", mensagem=" + '\'' + message + '\'' +
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
                         '}';
             case "login":
                 if (this.status == 200) {
@@ -61,8 +61,8 @@ public class JsonReturn {
                             '}';
                 } else {
                     return "{status=" + '\'' + status + '\'' +
-                            ", operacao=" + '\'' + operation + '\'' +
-                            ", mensagem='" + '\'' + message + '\'' +
+                            ", operacao=" + '\'' + operacao + '\'' +
+                            ", mensagem='" + '\'' + mensagem + '\'' +
                             '}';
                 }
             case "logout":
@@ -70,14 +70,14 @@ public class JsonReturn {
                     return "{status=" + '\'' + status + '\'' + '}';
                 }else{
                     return "{status=" + '\'' + status + '\'' +
-                            ", operacao=" + '\'' + operation + '\'' +
-                            ", mensagem=" + '\'' + message + '\'' +
+                            ", operacao=" + '\'' + operacao + '\'' +
+                            ", mensagem=" + '\'' + mensagem + '\'' +
                             '}';
                 }
             default:
                 return  "{status=" + '\'' + status + '\'' +
-                        ", operacao=" + '\'' + operation + '\'' +
-                        ", mensagem=" + '\'' + message + '\'' +
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
                         '}';
         }
     }

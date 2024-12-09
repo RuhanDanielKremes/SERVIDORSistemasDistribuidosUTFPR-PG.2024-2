@@ -11,7 +11,16 @@ import com.google.gson.Gson;
 
 import java.io.*; 
 
-public class ServerController { 
+public class ServerController {
+    FileWriter jsonLog;
+    {
+        try {
+            jsonLog = new FileWriter("jsonLog.txt", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize FileWriter", e);
+        }
+    }
     LogController logController = new LogController();
     protected static boolean serverContinue = true;
     protected Socket clientSocket;
@@ -106,7 +115,6 @@ public class ServerController {
                                         logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json.class).toString());
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Passing the json to a class", true);
                                         Json json = gson.fromJson(jsonInput, Json.class);
-                                        System.out.println("input: " + json.toString());
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
                                         OperacaoController operacaoController = new OperacaoController();
                                         Json json1 = new Json();
@@ -117,6 +125,8 @@ public class ServerController {
                                         jsonReturn = operacaoController.findOperation(json1);
                                         System.out.println(jsonReturn.toString());
                                         String jsonString = gson.toJson(jsonReturn);
+                                        System.out.println("output: " + jsonString);
+                                        jsonLog.write(jsonString);
                                         writer.println(jsonString);
                                     } catch (Exception e) {
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
@@ -130,7 +140,6 @@ public class ServerController {
                                 }else {
                                     logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class", true);
                                     jsonReturn.setStatus(401);
-                                    jsonReturn.setOperation("Json");
                                     jsonReturn.setMessage("Nao foi possivel ler o json recebido");
                                 }
                             } catch (NullPointerException npe) {

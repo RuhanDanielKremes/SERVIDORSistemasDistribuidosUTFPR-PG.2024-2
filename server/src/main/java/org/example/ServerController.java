@@ -123,9 +123,8 @@ public class ServerController {
                                         json1.setSenha(json.getSenha());
                                         json1.setNome(json.getNome());
                                         jsonReturn = operacaoController.findOperation(json1);
-                                        System.out.println(jsonReturn.toString());
                                         String jsonString = gson.toJson(jsonReturn);
-                                        System.out.println("output: " + jsonString);
+                                        System.out.println(jsonReturn.toString());
                                         jsonLog.write(jsonString);
                                         writer.println(jsonString);
                                     } catch (Exception e) {

@@ -71,7 +71,7 @@ public class OperacaoController{
             jsonReturn.setMessage("Nome muito longo");
             return jsonReturn;
         }
-        if (!(user.getName().matches("^[A-Z]+$ "))) {
+        if (!(user.getName().matches("[A-Z\\s]+"))) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "Nome invalido: Uso de caracteres fora de padrão", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
@@ -91,7 +91,7 @@ public class OperacaoController{
                     try {
                         DbController.executeStatment(conn, userController.createUser(user), userController.createUserList(user));
                         logController.writeSimpleLog("cadastrarUsuario -> 200", "Usuario cadastrado com sucesso!", true);
-                        jsonReturn.setStatus(200);
+                        jsonReturn.setStatus(201);
                         jsonReturn.setOperation(json.getOperacao());
                         jsonReturn.setMessage("Usuario cadastrado com sucesso!");
                         return jsonReturn;

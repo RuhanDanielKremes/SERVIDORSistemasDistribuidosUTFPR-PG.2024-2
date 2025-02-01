@@ -3,10 +3,14 @@ package org.example.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.example.model.Json;
 import org.example.model.JsonReturn;
 import org.example.model.User;
+import org.example.model.Category;
 
 public class OperacaoController{
 
@@ -24,6 +28,15 @@ public class OperacaoController{
             case "logout":
                 logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
                 return (logout(json));
+            case "listarCategorias":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (listCategory(json));
+            case "localizarCategoria":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (findCategory(json));
+            case "listarUsuarioCategorias":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (findUserSubscriptionsCategories(json));
             default:
                 logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol not found!", true);
                 JsonReturn jsonReturn = new JsonReturn();
@@ -215,8 +228,9 @@ public class OperacaoController{
         try {
             conn = DbController.conectDb();
             UserController userController = new UserController();
+            logController.writeSimpleLog("DBUG", userController.getUser(json.getToken()), true);
             ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
-            if (!rs.next()) {
+            if (rs.next()) {
                 logController.writeSimpleLog("validateToken -> 200", "Token valido", true);
                 jsonReturn.setStatus(200);
                 jsonReturn.setOperation(json.getOperacao());
@@ -286,17 +300,150 @@ public class OperacaoController{
     //     }
     // }
 
-    public JsonReturn Echo(Json json) throws IOException{
-        logController.writeSimpleLog("Echo", "Inicializado procedimento de echo", true);
+    // public JsonReturn Echo(Json json) throws IOException{
+    //     logController.writeSimpleLog("Echo", "Inicializado procedimento de echo", true);
+    //     JsonReturn jsonReturn = validateToken(json);
+    //     if (jsonReturn.getStatus() == 401) {
+    //         jsonReturn.setStatus(200);
+    //         jsonReturn.setOperation(json.getOperacao());
+    //         return jsonReturn;
+    //     }
+    //     jsonReturn.setMessage(json.getMensagem());
+    //     return jsonReturn;
+    // }
+
+    public JsonReturn listCategory(Json json) throws IOException{
+        logController.writeSimpleLog("listCategory", "Inicializado procedimento de listagem de categorias", true);
         JsonReturn jsonReturn = validateToken(json);
         if (jsonReturn.getStatus() == 401) {
-            jsonReturn.setStatus(200);
-            jsonReturn.setOperation(json.getOperacao());
-        
             return jsonReturn;
         }
-        jsonReturn.setMessage(json.getMensagem());
-        return jsonReturn;
+        jsonReturn.setMessage(null);
+        List<Category> categoryList = new ArrayList<>();
+        Connection conn = null;
+        try {
+            conn = DbController.conectDb();
+            CategoryController categoryController = new CategoryController();
+            ResultSet rs = DbController.executeQuery(conn, categoryController.listCategory());
+            try {
+                logController.writeSimpleLog("listCategory", "Buscando categorias", true);
+                while (rs.next()) {
+                    Category category = new Category();
+                    category.setId(rs.getInt("idCategory"));
+                    category.setName(rs.getString("name"));
+                    categoryList.add(category);
+                }
+                if (categoryList.isEmpty()) {
+                    logController.writeSimpleLog("listCategory -> 401", "Nenhuma categoria encontrada", true);
+                }
+                jsonReturn.setStatus(201);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setCategory(categoryList);
+                return jsonReturn;
+            }catch (Exception e){
+                logController.writeSimpleLog("listCategory -> 401", "Erro ao buscar categorias:" + e, true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+                return jsonReturn;
+            }
+        } catch (Exception e) {
+            logController.writeSimpleLog("listCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
     }
 
+    public JsonReturn findCategory(Json json) throws IOException{
+        logController.writeSimpleLog("findCategory", "Inicializado procedimento de busca de categoria", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        jsonReturn.setMessage(null);
+        Connection conn = null;
+        Category category = new Category();
+        System.out.println(json.getId());
+        category.setId(json.getId());
+        try {
+            conn = DbController.conectDb();
+            CategoryController categoryController = new CategoryController();
+            ResultSet rs = DbController.executeQuery(conn, categoryController.findCategoryById(category.getId()));
+            try {
+                logController.writeSimpleLog("findCategory", "Buscando categoria", true);
+                if (rs.next()) {
+                    category.setName(rs.getString("name"));
+                    jsonReturn.setStatus(201);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setCategory(Arrays.asList(category));
+                    return jsonReturn;
+                }else{
+                    logController.writeSimpleLog("findCategory -> 401", "Categoria nao encontrada", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Categoria nao encontrada");
+                    return jsonReturn;
+                }
+            }catch (Exception e){
+                logController.writeSimpleLog("findCategory -> 401", "Erro ao buscar categoria:" + e, true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+                return jsonReturn;
+            }
+        } catch (Exception e) {
+            logController.writeSimpleLog("findCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn findUserSubscriptionsCategories(Json json) throws IOException{
+        logController.writeSimpleLog("findUserSubscriptionsCategory", "Inicializado procedimento de busca de categorias inscritas por usuario", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        jsonReturn.setMessage(null);
+        Connection conn = null;
+        User user = new User();
+        user.setRa(json.getToken());
+        try {
+            conn = DbController.conectDb();
+            CategoryController categoryController = new CategoryController();
+            ResultSet rs = DbController.executeQuery(conn, categoryController.findUserSubscriptionsCategories(user.getRa()));
+            try {
+                logController.writeSimpleLog("findUserSubscriptionsCategory", "Buscando categorias", true);
+                List<Category> categoryList = new ArrayList<>();
+                while (rs.next()) {
+                    Category category = new Category();
+                    category.setId(rs.getInt("category"));
+                    categoryList.add(category);
+                }
+                if (categoryList.isEmpty()) {
+                    logController.writeSimpleLog("findUserSubscriptionsCategory -> 401", "Nenhuma categoria encontrada", true);
+                }
+                jsonReturn.setStatus(201);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setCategory(categoryList);
+                return jsonReturn;
+            }catch (Exception e){
+                logController.writeSimpleLog("findUserSubscriptionsCategory -> 401", "Erro ao buscar categorias:" + e, true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+                return jsonReturn;
+            }
+        } catch (Exception e) {
+            logController.writeSimpleLog("findUserSubscriptionsCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
 }

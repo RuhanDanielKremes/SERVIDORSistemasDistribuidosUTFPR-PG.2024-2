@@ -114,9 +114,16 @@ public class ServerController {
                                         json1.setRa(json.getRa());
                                         json1.setSenha(json.getSenha());
                                         json1.setNome(json.getNome());
+                                        if (json.getToken() != null) {
+                                            json1.setToken(json.getToken());
+                                        }
+                                        if (json.getId() != 0) {
+                                            json1.setId(json.getId());
+                                        }
                                         jsonReturn = operacaoController.findOperation(json1);
                                         System.out.println(jsonReturn.toString());
                                         String jsonString = gson.toJson(jsonReturn);
+                                        System.out.println("output:" + jsonString);
                                         writer.println(jsonString);
                                     } catch (Exception e) {
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);

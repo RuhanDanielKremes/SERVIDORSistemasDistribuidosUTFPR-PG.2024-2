@@ -107,6 +107,12 @@ public class JsonReturn {
                             '}';
                 }
             case "listarCategorias":
+                if (status != 200) {
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+                }
                 String returnToString;
                 returnToString = "{status=" + status + 
                         ", operacao=" + '\'' + operacao + '\''
@@ -128,15 +134,77 @@ public class JsonReturn {
                 }
                 return returnToString;
             case "localizarCategoria":
+            if (status != 200) {
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+                }
                 return "{status=" + status + 
                         ", operacao=" + '\'' + operacao + '\'' +
                         ", categorias=" + categorias.toString() +
                         '}';
+            case "listarAvisos":
+                if (status != 200) {
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+                }
+                String returnToStringWarnings;
+                returnToStringWarnings = "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\''
+                        + ", avisos=[";
+                if (avisos == null) {
+                    returnToStringWarnings += "]}";
+                    return returnToStringWarnings;
+                }
+                if (avisos.isEmpty()) {
+                    returnToStringWarnings += "]}";
+                    return returnToStringWarnings;
+                }
+                for (Warnings warning : this.avisos) {
+                    if (warning.equals(this.avisos.get(this.avisos.size() - 1))) {
+                        returnToStringWarnings += warning.toString() + "]}";
+                    } else {
+                        returnToStringWarnings += warning.toString() + ", ";
+                    }
+                }
+                return returnToStringWarnings;
+            case "cadastrarUsuarioCategoria":
+                if (status != 200) {
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+                }
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+            case "descadastrarUsuarioCategoria":
+                if (status != 200) {
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+                }
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
             default:
+                if (status != 200) {
+                return "{status=" + status + 
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", mensagem=" + '\'' + mensagem + '\'' +
+                        '}';
+                }
                 return  "{status=" + status + 
                         ", operacao=" + '\'' + operacao + '\'' +
                         ", mensagem=" + '\'' + mensagem + '\'' +
                         '}';
         }
+        // case "listarAvisos": case "cadastrarUsuarioCategoria": case "descadastrarUsuarioCategoria":
     }
 }

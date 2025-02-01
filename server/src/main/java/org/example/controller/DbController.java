@@ -117,6 +117,7 @@ public class DbController {
             }
             logController.writeSimpleLog("SYSTEM: StatmentExecution", "Statment created ", true);
             logController.writeSimpleLog("SYSTEM: StatmentExecution", "Executing Statment ", true);
+            System.out.println(pstmt);
             try {
                 pstmt.execute();
                 logController.writeSimpleLog("SYSTEM: StatmentExecution", "Sucess! Statment executed ", true);

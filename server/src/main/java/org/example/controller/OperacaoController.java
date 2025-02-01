@@ -10,6 +10,7 @@ import java.util.List;
 import org.example.model.Json;
 import org.example.model.JsonReturn;
 import org.example.model.User;
+import org.example.model.Warnings;
 import org.example.model.Category;
 
 public class OperacaoController{
@@ -37,6 +38,15 @@ public class OperacaoController{
             case "listarUsuarioCategorias":
                 logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
                 return (findUserSubscriptionsCategories(json));
+            case "listarAvisos":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (listWarinigs(json));
+            case "cadastrarUsuarioCategoria":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (subscribeUserCategory(json));
+            case "descadastrarUsuarioCategoria":
+                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
+                return (unsubscribeUserCategory(json));
             default:
                 logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol not found!", true);
                 JsonReturn jsonReturn = new JsonReturn();
@@ -446,4 +456,142 @@ public class OperacaoController{
             return jsonReturn;
         }
     }
+
+    public JsonReturn listWarinigs(Json json) throws IOException{
+        logController.writeSimpleLog("listWarnings", "Inicializado procedimento de listagem de avisos", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        jsonReturn.setMessage(null);
+        List<Warnings> warningsList = new ArrayList<>();
+        Connection conn = null;
+        try {
+            conn = DbController.conectDb();
+            WarningController warningController = new WarningController();
+            ResultSet rs = DbController.executeQuery(conn, warningController.listWarning());
+            try {
+                logController.writeSimpleLog("listWarnings", "Buscando avisos", true);
+                while (rs.next()) {
+                    Warnings warning = new Warnings();
+                    warning.setId(rs.getInt("idwarning"));
+                    warning.setTitle(rs.getString("title"));
+                    warning.setDescription(rs.getString("description"));
+                    warning.setCategory(rs.getInt("category"));
+                    warningsList.add(warning);
+                }
+                if (warningsList.isEmpty()) {
+                    logController.writeSimpleLog("listWarnings -> 401", "Nenhum aviso encontrado", true);
+                }
+                jsonReturn.setStatus(201);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setWarning(warningsList);
+                return jsonReturn;
+            }catch (Exception e){
+                logController.writeSimpleLog("listWarnings -> 401", "Erro ao buscar avisos:" + e, true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+                return jsonReturn;
+            }
+        } catch (Exception e) {
+            logController.writeSimpleLog("listWarnings -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn subscribeUserCategory(Json json) throws IOException{
+        logController.writeSimpleLog("subscribeUserCategory", "Inicializado procedimento de inscrição de categoria", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        jsonReturn.setMessage(null);
+        Connection conn = null;
+        User user = new User();
+        user.setRa(json.getToken());
+        try {
+            conn = DbController.conectDb();
+            UserController userController = new UserController();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(user.getRa()));
+            if (rs.next()) {
+                user.setId(rs.getInt("idUser"));
+            }else{
+                logController.writeSimpleLog("subscribeUserCategory -> 401", "Usuario nao encontrado", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario nao encontrado");
+                return jsonReturn;
+            }
+        } catch (Exception e) {
+            logController.writeSimpleLog("subscribeUserCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+        try {
+            logController.writeSimpleLog("subscribeUserCategory", "Conectando com o banco de dados", true);
+            conn = DbController.conectDb();
+            SubscriptionController subscriptionController = new SubscriptionController();
+            boolean result = false;
+            result = DbController.executeStatment(conn, subscriptionController.subscribe(), subscriptionController.subscribeList(user.getId(), json.getId()));
+            if (result) {
+                logController.writeSimpleLog("subscribeUserCategory -> 200", "Inscrição realizada com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Inscrição realizada com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("subscribeUserCategory -> 401", "Erro ao realizar inscrição", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn; 
+        } catch (Exception e) {
+            logController.writeSimpleLog("subscribeUserCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn unsubscribeUserCategory(Json json) throws IOException{
+        logController.writeSimpleLog("unsubscribeUserCategory", "Inicializado procedimento de desinscrição de categoria", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        jsonReturn.setMessage(null);
+        Connection conn = null;
+        try {
+            conn = DbController.conectDb();
+            SubscriptionController subscriptionController = new SubscriptionController();
+            boolean result = false;
+            result = DbController.executeStatment(conn, subscriptionController.unsubscribe(), subscriptionController.unsubscribeList(json.getId()));
+            if (result) {
+                logController.writeSimpleLog("unsubscribeUserCategory -> 200", "Desinscrição realizada com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Desinscrição realizada com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("unsubscribeUserCategory -> 401", "Erro ao realizar desinscrição", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn; 
+        } catch (Exception e) {
+            logController.writeSimpleLog("unsubscribeUserCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+    
 }

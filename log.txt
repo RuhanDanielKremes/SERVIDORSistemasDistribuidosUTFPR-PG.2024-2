@@ -1,0 +1,186 @@
+[2025-02-01 17:09:14] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-01 17:09:14] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-01 17:09:14] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-01 17:09:14] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-01 17:09:14] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-01 17:09:14] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-01 17:09:14] Operation: SYSTEM: Find protocol Opreation
+	Protocol found!
+[2025-02-01 17:09:14] Operation: unsubscribeUserCategory
+	Inicializado procedimento de desinscrição de categoria
+[2025-02-01 17:09:14] Operation: validateToken
+	Inicializado procedimento de validação de token
+[2025-02-01 17:09:14] Operation: validateToken -> 401
+	Token invalido
+[2025-02-01 17:09:28] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-01 17:09:28] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-01 17:09:28] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-01 17:09:28] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-01 17:09:28] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-01 17:09:28] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-01 17:09:28] Operation: SYSTEM: Find protocol Opreation
+	Protocol found!
+[2025-02-01 17:09:28] Operation: login
+	Inicializado procedimento de login
+[2025-02-01 17:09:28] Operation: SYSTEM:conectarBanco
+	Configurating Connection
+[2025-02-01 17:09:28] Operation: SYSTEM:conectarBanco
+	Read database props
+[2025-02-01 17:09:28] Operation: SYSTEM:conectarBanco
+	Database props read sucessfull
+[2025-02-01 17:09:28] Operation: SYSTEM:conectarBanco
+	Try connection with db
+[2025-02-01 17:09:28] Operation: SYSTEM:conectarBanco
+	Connection with db sucessfull
+[2025-02-01 17:09:28] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
+[2025-02-01 17:09:28] Operation: SYSTEM: QueryExecution
+	Query executed 
+[2025-02-01 17:09:28] Operation: login -> 200
+	Usuario logado com sucesso
+[2025-02-01 17:09:56] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-01 17:09:56] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-01 17:09:56] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-01 17:09:56] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-01 17:09:56] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-01 17:09:56] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-01 17:09:56] Operation: SYSTEM: Find protocol Opreation
+	Protocol found!
+[2025-02-01 17:09:56] Operation: unsubscribeUserCategory
+	Inicializado procedimento de desinscrição de categoria
+[2025-02-01 17:09:56] Operation: validateToken
+	Inicializado procedimento de validação de token
+[2025-02-01 17:09:56] Operation: validateToken -> 401
+	Token invalido
+[2025-02-01 17:10:04] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-01 17:10:04] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-01 17:10:04] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-01 17:10:04] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-01 17:10:04] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-01 17:10:04] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-01 17:10:04] Operation: SYSTEM: Find protocol Opreation
+	Protocol found!
+[2025-02-01 17:10:04] Operation: login
+	Inicializado procedimento de login
+[2025-02-01 17:10:04] Operation: SYSTEM:conectarBanco
+	Configurating Connection
+[2025-02-01 17:10:04] Operation: SYSTEM:conectarBanco
+	Read database props
+[2025-02-01 17:10:04] Operation: SYSTEM:conectarBanco
+	Database props read sucessfull
+[2025-02-01 17:10:04] Operation: SYSTEM:conectarBanco
+	Try connection with db
+[2025-02-01 17:10:04] Operation: SYSTEM:conectarBanco
+	Connection with db sucessfull
+[2025-02-01 17:10:04] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
+[2025-02-01 17:10:04] Operation: SYSTEM: QueryExecution
+	Query executed 
+[2025-02-01 17:10:04] Operation: login -> 200
+	Usuario logado com sucesso
+[2025-02-01 17:10:10] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-01 17:10:10] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-01 17:10:10] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-01 17:10:10] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-01 17:10:10] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-01 17:10:10] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-01 17:10:10] Operation: SYSTEM: Find protocol Opreation
+	Protocol found!
+[2025-02-01 17:10:10] Operation: unsubscribeUserCategory
+	Inicializado procedimento de desinscrição de categoria
+[2025-02-01 17:10:10] Operation: validateToken
+	Inicializado procedimento de validação de token
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Configurating Connection
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Read database props
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Database props read sucessfull
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Try connection with db
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Connection with db sucessfull
+[2025-02-01 17:10:10] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
+[2025-02-01 17:10:10] Operation: DBUG
+	SELECT * FROM users WHERE ra = '2524198'
+[2025-02-01 17:10:10] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
+[2025-02-01 17:10:10] Operation: SYSTEM: QueryExecution
+	Query executed 
+[2025-02-01 17:10:10] Operation: validateToken -> 200
+	Token valido
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Configurating Connection
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Read database props
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Database props read sucessfull
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Try connection with db
+[2025-02-01 17:10:10] Operation: SYSTEM:conectarBanco
+	Connection with db sucessfull
+[2025-02-01 17:10:10] Operation: SYSTEM: QueryConstruction
+	SQL Query created: DELETE FROM subscription WHERE idsubscription = ?
+[2025-02-01 17:10:10] Operation: SYSTEM: QueryConstruction
+	Subscription added to list
+[2025-02-01 17:10:10] Operation: SYSTEM: StatmentExecution
+	Creating Steatment 
+[2025-02-01 17:10:10] Operation: SYSTEM: StatmentExecution
+	Statment created 
+[2025-02-01 17:10:10] Operation: SYSTEM: StatmentExecution
+	Executing Statment 
+[2025-02-01 17:10:10] Operation: SYSTEM: StatmentExecution
+	Sucess! Statment executed 
+[2025-02-01 17:10:10] Operation: unsubscribeUserCategory -> 200
+	Desinscrição realizada com sucesso
+[2025-02-01 17:10:18] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-01 17:10:18] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-01 17:10:18] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-01 17:10:18] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-01 17:10:18] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-01 17:10:18] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-01 17:10:18] Operation: SYSTEM: Find protocol Opreation
+	Protocol found!
+[2025-02-01 17:10:18] Operation: listWarnings
+	Inicializado procedimento de listagem de avisos
+[2025-02-01 17:10:18] Operation: validateToken
+	Inicializado procedimento de validação de token
+[2025-02-01 17:10:18] Operation: validateToken -> 401
+	Token invalido

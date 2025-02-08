@@ -3,6 +3,7 @@ package org.example.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,54 +11,84 @@ import java.util.List;
 import org.example.model.Json;
 import org.example.model.JsonReturn;
 import org.example.model.User;
-import org.example.model.Warnings;
+import org.example.model.Avisos;
 import org.example.model.Category;
 
 public class OperacaoController{
 
     public LogController logController = new LogController();
 
-    public JsonReturn findOperation(Json json) throws IOException{
+    public JsonReturn findOperation(Json<?> json) throws IOException{
         logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Shearching for a protocol Operation", true);
         switch (json.getOperacao()) {
             case "cadastrarUsuario":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (cadastro(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: cadastrarUsuario", true);
+                return cadastro(json);
             case "login":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (login(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: login", true);
+                return login(json);
             case "logout":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (logout(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: logout", true);
+                return logout(json);
             case "listarCategorias":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (listCategory(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: listarCategorias", true);
+                return listCategory(json);
             case "localizarCategoria":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (findCategory(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: localizarCategoria", true);
+                return findCategory(json);
             case "listarUsuarioCategorias":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (findUserSubscriptionsCategories(json));
-            case "listarAvisos":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (listWarinigs(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: listarUsuarioCategorias", true);
+                return findUserSubscriptionsCategories(json);
             case "cadastrarUsuarioCategoria":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (subscribeUserCategory(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: cadastrarUsuarioCategoria", true);
+                return subscribeUserCategory(json);
+            case "listarUsuarioAvisos":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: listarUsuarioAvisos",true);
+                return findUserWarnings(json);
             case "descadastrarUsuarioCategoria":
-                logController.writeSimpleLog("SYSTEM: Find protocol Opreation", "Protocol found!", true);
-                return (unsubscribeUserCategory(json));
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: descadastrarUsuarioCategoria", true);
+                return unsubscribeUserCategory(json);
+            case "listarAvisos":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: listarAvisos", true);
+                return listWarnings(json);
+            case "listarUsuarios":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: listarUsuarios", true);
+                return listUsers(json);
+            case "localizarUsuario":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: localizarUsuario", true);
+                return findUser(json);
+            case "excluirUsuario":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: excluirUsuario", true);
+                return deleteUser(json);
+            case "editarUsuario":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: editarUsuario", true);
+                return editUser(json);
+            case "salvarCategoria":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: salvarCategoria", true);
+                return saveCategory(json);
+            case "excluirCategoria":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: excluirCategoria", true);
+                return deleteCategory(json);
+            case "salvarAviso":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: salvarAviso", true);
+                return saveWarning(json);
+            case "localizarAviso":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: localizarAviso", true);
+                return findCategory(json);
+            case "excluirAviso":
+                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol found: excluirAviso", true);
+                return deleteWarning(json);
             default:
-                logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol not found!", true);
-                JsonReturn jsonReturn = new JsonReturn();
-                jsonReturn.setStatus(401);
-                jsonReturn.setOperation(json.getOperacao());
-                jsonReturn.setMessage("Operação não encontrada");
-                return jsonReturn;
-        }        
+            logController.writeSimpleLog("SYSTEM: Find protocol Operation", "Protocol not found!", true);
+            JsonReturn jsonReturn = new JsonReturn();
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Operação não encontrada");
+            return jsonReturn;
+        }
     }
 
-    public JsonReturn cadastro(Json json) throws IOException{
+    public JsonReturn cadastro(Json<?> json) throws IOException{
         logController.writeSimpleLog("cadastrarUsuario", "Inicializado procedimento de cadastro", false);
         Connection conn = null;
         User user = new User();
@@ -148,7 +179,7 @@ public class OperacaoController{
         }
     }
 
-    public JsonReturn login(Json json) throws IOException{
+    public JsonReturn login(Json<?> json) throws IOException{
         logController.writeSimpleLog("login", "Inicializado procedimento de login", true);
         JsonReturn jsonReturn = new JsonReturn();
         Connection conn = null;
@@ -215,7 +246,7 @@ public class OperacaoController{
         }
     }
 
-    public JsonReturn logout(Json json) throws IOException{
+    public JsonReturn logout(Json<?> json) throws IOException{
         logController.writeSimpleLog("logout", "Inicializado procedimento de logout", true);
         JsonReturn jsonReturn = new JsonReturn();
         jsonReturn.setStatus(200);
@@ -224,7 +255,7 @@ public class OperacaoController{
         return jsonReturn;
     }
 
-    public JsonReturn validateToken(Json json) throws IOException{
+    public JsonReturn validateToken(Json<?> json) throws IOException{
         logController.writeSimpleLog("validateToken", "Inicializado procedimento de validação de token", true);
         Connection conn = null;
         JsonReturn jsonReturn = new JsonReturn();
@@ -262,67 +293,7 @@ public class OperacaoController{
         }
     }
 
-    // public JsonReturn changePassword(Json json) throws IOException{
-    //     logController.writeSimpleLog("changePassword", "Inicializado procedimento de mudança de senha", true);
-    //     JsonReturn jsonReturn = new JsonReturn();
-    //     Connection conn = null;
-    //     User user = new User();
-    //     user.setRa(json.getRa());
-    //     user.setPassword(json.getSenha());
-    //     if (user.getPassword().length() < 8) {
-    //         logController.writeSimpleLog("changePassword -> 401", "Senha muito Curta", true);
-    //         jsonReturn.setStatus(401);
-    //         jsonReturn.setOperation(json.getOperacao());
-    //         jsonReturn.setMessage("Senha muito curta");
-    //         return jsonReturn;
-    //     }
-    //     if (user.getPassword().length() > 20) {
-    //         logController.writeSimpleLog("changePassword -> 401", "Senha muito Longa", true);
-    //         jsonReturn.setStatus(401);
-    //         jsonReturn.setOperation(json.getOperacao());
-    //         jsonReturn.setMessage("Senha muito longa");
-    //         return jsonReturn;
-    //     }
-    //     try {
-    //         conn = DbController.conectDb();
-    //         UserController userController = new UserController();
-    //         ResultSet rs = DbController.executeQuery(conn, userController.getUser(user.getRa()));
-    //         if (rs == null) {
-    //             logController.writeSimpleLog("changePassword -> 401", "Usuario nao encontrado", true);
-    //             jsonReturn.setStatus(401);
-    //             jsonReturn.setOperation(json.getOperacao());
-    //             jsonReturn.setMessage("Usuario nao encontrado");
-    //             return jsonReturn;
-    //         }else{
-    //             DbController.executeStatment(conn, userController.updateUser(user), userController.updateUserList(user));
-    //             logController.writeSimpleLog("changePassword -> 200", "Senha alterada com sucesso", true);
-    //             jsonReturn.setStatus(200);
-    //             jsonReturn.setOperation(json.getOperacao());
-    //             jsonReturn.setMessage("Senha alterada com sucesso");
-    //             return jsonReturn;
-    //         }
-    //     } catch (Exception e) {
-    //         logController.writeSimpleLog("changePassword -> 401", "Erro na conexão com o banco de dados", true);
-    //         jsonReturn.setStatus(401);
-    //         jsonReturn.setOperation(json.getOperacao());
-    //         jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
-    //         return jsonReturn;
-    //     }
-    // }
-
-    // public JsonReturn Echo(Json json) throws IOException{
-    //     logController.writeSimpleLog("Echo", "Inicializado procedimento de echo", true);
-    //     JsonReturn jsonReturn = validateToken(json);
-    //     if (jsonReturn.getStatus() == 401) {
-    //         jsonReturn.setStatus(200);
-    //         jsonReturn.setOperation(json.getOperacao());
-    //         return jsonReturn;
-    //     }
-    //     jsonReturn.setMessage(json.getMensagem());
-    //     return jsonReturn;
-    // }
-
-    public JsonReturn listCategory(Json json) throws IOException{
+    public JsonReturn listCategory(Json<?> json) throws IOException{
         logController.writeSimpleLog("listCategory", "Inicializado procedimento de listagem de categorias", true);
         JsonReturn jsonReturn = validateToken(json);
         if (jsonReturn.getStatus() == 401) {
@@ -366,7 +337,7 @@ public class OperacaoController{
         }
     }
 
-    public JsonReturn findCategory(Json json) throws IOException{
+    public JsonReturn findCategory(Json<?> json) throws IOException{
         logController.writeSimpleLog("findCategory", "Inicializado procedimento de busca de categoria", true);
         JsonReturn jsonReturn = validateToken(json);
         if (jsonReturn.getStatus() == 401) {
@@ -412,7 +383,7 @@ public class OperacaoController{
         }
     }
 
-    public JsonReturn findUserSubscriptionsCategories(Json json) throws IOException{
+    public JsonReturn findUserSubscriptionsCategories(Json<?> json) throws IOException{
         logController.writeSimpleLog("findUserSubscriptionsCategory", "Inicializado procedimento de busca de categorias inscritas por usuario", true);
         JsonReturn jsonReturn = validateToken(json);
         if (jsonReturn.getStatus() == 401) {
@@ -457,53 +428,7 @@ public class OperacaoController{
         }
     }
 
-    public JsonReturn listWarinigs(Json json) throws IOException{
-        logController.writeSimpleLog("listWarnings", "Inicializado procedimento de listagem de avisos", true);
-        JsonReturn jsonReturn = validateToken(json);
-        if (jsonReturn.getStatus() == 401) {
-            return jsonReturn;
-        }
-        jsonReturn.setMessage(null);
-        List<Warnings> warningsList = new ArrayList<>();
-        Connection conn = null;
-        try {
-            conn = DbController.conectDb();
-            WarningController warningController = new WarningController();
-            ResultSet rs = DbController.executeQuery(conn, warningController.listWarning());
-            try {
-                logController.writeSimpleLog("listWarnings", "Buscando avisos", true);
-                while (rs.next()) {
-                    Warnings warning = new Warnings();
-                    warning.setId(rs.getInt("idwarning"));
-                    warning.setTitle(rs.getString("title"));
-                    warning.setDescription(rs.getString("description"));
-                    warning.setCategory(rs.getInt("category"));
-                    warningsList.add(warning);
-                }
-                if (warningsList.isEmpty()) {
-                    logController.writeSimpleLog("listWarnings -> 401", "Nenhum aviso encontrado", true);
-                }
-                jsonReturn.setStatus(201);
-                jsonReturn.setOperation(json.getOperacao());
-                jsonReturn.setWarning(warningsList);
-                return jsonReturn;
-            }catch (Exception e){
-                logController.writeSimpleLog("listWarnings -> 401", "Erro ao buscar avisos:" + e, true);
-                jsonReturn.setStatus(401);
-                jsonReturn.setOperation(json.getOperacao());
-                jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
-                return jsonReturn;
-            }
-        } catch (Exception e) {
-            logController.writeSimpleLog("listWarnings -> 401", "Erro na conexão com o banco de dados" + e, true);
-            jsonReturn.setStatus(401);
-            jsonReturn.setOperation(json.getOperacao());
-            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
-            return jsonReturn;
-        }
-    }
-
-    public JsonReturn subscribeUserCategory(Json json) throws IOException{
+    public JsonReturn subscribeUserCategory(Json<?> json) throws IOException{
         logController.writeSimpleLog("subscribeUserCategory", "Inicializado procedimento de inscrição de categoria", true);
         JsonReturn jsonReturn = validateToken(json);
         if (jsonReturn.getStatus() == 401) {
@@ -538,7 +463,7 @@ public class OperacaoController{
             conn = DbController.conectDb();
             SubscriptionController subscriptionController = new SubscriptionController();
             boolean result = false;
-            result = DbController.executeStatment(conn, subscriptionController.subscribe(), subscriptionController.subscribeList(user.getId(), json.getId()));
+            result = DbController.executeStatment(conn, subscriptionController.subscribe(), subscriptionController.subscribeList(user.getId(), (Integer) json.getCategoria()));
             if (result) {
                 logController.writeSimpleLog("subscribeUserCategory -> 200", "Inscrição realizada com sucesso", true);
                 jsonReturn.setStatus(200);
@@ -560,7 +485,7 @@ public class OperacaoController{
         }
     }
 
-    public JsonReturn unsubscribeUserCategory(Json json) throws IOException{
+    public JsonReturn unsubscribeUserCategory(Json<?> json) throws IOException{
         logController.writeSimpleLog("unsubscribeUserCategory", "Inicializado procedimento de desinscrição de categoria", true);
         JsonReturn jsonReturn = validateToken(json);
         if (jsonReturn.getStatus() == 401) {
@@ -572,7 +497,7 @@ public class OperacaoController{
             conn = DbController.conectDb();
             SubscriptionController subscriptionController = new SubscriptionController();
             boolean result = false;
-            result = DbController.executeStatment(conn, subscriptionController.unsubscribe(), subscriptionController.unsubscribeList(json.getId()));
+            result = DbController.executeStatment(conn, subscriptionController.unsubscribe(), subscriptionController.unsubscribeList((Integer) json.getCategoria()));
             if (result) {
                 logController.writeSimpleLog("unsubscribeUserCategory -> 200", "Desinscrição realizada com sucesso", true);
                 jsonReturn.setStatus(200);
@@ -593,5 +518,749 @@ public class OperacaoController{
             return jsonReturn;
         }
     }
+
+    public JsonReturn listWarnings(Json<?> json) throws IOException{
+        logController.writeSimpleLog("listWarnigs", "Inicializando procedimento de desinscrição de categoria", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        Connection conn;
+        try {
+            logController.writeSimpleLog("listWarnigs", "Listing category warnings", true);
+            conn = DbController.conectDb();
+            CategoryController categoryController = new CategoryController();
+            ResultSet rs;
+            if ((Integer) json.getCategoria() == 0) {
+                rs = DbController.executeQuery(conn, categoryController.listCategory());
+            }else{
+                rs = DbController.executeQuery(conn, categoryController.findCategoryById((Integer) json.getCategoria()));
+            }
+            List<Avisos> warningsList = new ArrayList<>();
+            while (rs.next()) {
+                Category category = new Category();
+                category.setName(rs.getString("name"));
+                category.setId(rs.getInt("idcategory"));
+                logController.writeSimpleLog("listWarnigs", "Foud user category: " + category.getName() , true);
+                WarningController warningController = new WarningController();
+                logController.writeSimpleLog("listWarnigs", "Listing warnings from category", true);
+                try {
+                    ResultSet rs2 = DbController.executeQuery(conn, warningController.listWarningByCategory(category.getId()));
+                    while (rs2.next()) {
+                        Avisos warning = new Avisos();
+                        warning.setId(rs2.getInt("idwarning"));
+                        warning.setTitle(rs2.getString("title"));
+                        logController.writeSimpleLog("listWarnigs", "Foud warning: " + warning.getTitle() , true);
+                        warning.setDescription(rs2.getString("description"));
+                        warning.setCategory(category);   
+                        warningsList.add(warning);
+                    }
+                    jsonReturn.setWarning(warningsList);
+                } catch (Exception e) {
+                    logController.writeSimpleLog("listWarnigs -> 401", "Erro ao buscar avisos:" + e, true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+                    return jsonReturn;
+                }
+            }
+            
+        } catch (Exception e) {
+            logController.writeSimpleLog("listWarnigs -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+        jsonReturn.setStatus(201);
+        jsonReturn.setOperation(json.getOperacao());
+        return jsonReturn;
+    }
+
+    public JsonReturn listUsers(Json<?> json) throws IOException{
+        logController.writeSimpleLog("listUsers", "Inicializando procedimento de listagem de usuarios", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        try {
+            UserController userController = new UserController();
+            Connection conn = DbController.conectDb();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
+            if (rs.next()) {
+                User user = new User();
+                user.setRa(json.getRa());
+                user.setRole(rs.getString("role"));
+                if (user.getRole().equals("admin")) {
+                    logController.writeSimpleLog("SERVER: ListUsers", "Admin access granted", true);
+                    jsonReturn.setMessage(null);
+                    try {
+                        logController.writeSimpleLog("listUsers", "Listing users", true);
+                        conn = DbController.conectDb();
+                        rs = DbController.executeQuery(conn, userController.listUsers());
+                        List<User> userList = new ArrayList<>();
+                        while (rs.next()) {
+                            User userlistage = new User();
+                            userlistage.setId(rs.getInt("idUser"));
+                            userlistage.setName(rs.getString("name"));
+                            userlistage.setRa(rs.getString("ra"));
+                            userlistage.setRole(rs.getString("role"));
+                            userList.add(user);
+                        }
+                        jsonReturn.setUser(userList);
+                    } catch (Exception e) {
+                        logController.writeSimpleLog("listUsers -> 401", "Erro na conexão com o banco de dados" + e, true);
+                        jsonReturn.setStatus(401);
+                        jsonReturn.setOperation(json.getOperacao());
+                        jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+                        return jsonReturn;
+                    }
+                    jsonReturn.setStatus(201);
+                    jsonReturn.setOperation(json.getOperacao());
+                    return jsonReturn;
+                }else{
+                    logController.writeSimpleLog("SERVER: ListUsers", "Access denied. Client tried to acess other User information", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Acesso negado");
+                    return jsonReturn;
+                }
+            } else {
+                logController.writeSimpleLog("SERVER: ListUsers", "User not found", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Access Negado");
+                return jsonReturn;
+            }
+        } catch (SQLException sqle) {
+            logController.writeSimpleLog("SERVER: ListUsers", "Error on database connection" + sqle.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("SERVER: ListUsers", "Error on database connection" + e.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn findUser(Json<?> json) throws IOException{
+        logController.writeSimpleLog("findUser", "Inicializando procedimento de busca de usuario", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        if(!json.getToken().matches(json.getRa())){
+            try {
+                UserController userController = new UserController();
+                Connection conn = DbController.conectDb();
+                ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getRa()));
+                if (rs.next()) {
+                    User user = new User();
+                    user.setRa(json.getRa());
+                    user.setRole(rs.getString("role"));
+                    if (user.getRole().equals("admin")) {
+                        logController.writeSimpleLog("SERVER: FindUser", "Admin access granted", true);
+                        jsonReturn.setMessage(null);
+                    }else{
+                        logController.writeSimpleLog("SERVER: FindUser", "Access denied. Client tried to acess other User information", true);
+                        jsonReturn.setStatus(401);
+                        jsonReturn.setOperation(json.getOperacao());
+                        jsonReturn.setMessage("Acesso negado");
+                        return jsonReturn;
+                    }
+                } else {
+                    logController.writeSimpleLog("SERVER: FindUser", "User not found", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Usuario nao encontrado");
+                    return jsonReturn;
+                }
+            } catch (SQLException sqle) {
+                logController.writeSimpleLog("SERVER: FindUser", "Error on database connection" + sqle.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            } catch (Exception e) {
+                logController.writeSimpleLog("SERVER: FindUser", "Error on database connection" + e.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            }
+        }
+        logController.writeSimpleLog("findUser", "User validated. Access granted", true);
+        Connection conn;
+        try {
+            logController.writeSimpleLog("findUser", "Listing user", true);
+            conn = DbController.conectDb();
+            UserController userController = new UserController();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getRa()));
+            List<User> userList = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("idUser"));
+                user.setName(rs.getString("name"));
+                user.setRa(rs.getString("ra"));
+                user.setRole(rs.getString("role"));
+                userList.add(user);
+            }
+            jsonReturn.setUser(userList);
+        } catch (Exception e) {
+            logController.writeSimpleLog("findUser -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+        jsonReturn.setStatus(201);
+        jsonReturn.setOperation(json.getOperacao());
+        return jsonReturn;
+    }
+
+    public JsonReturn deleteUser(Json<?> json) throws IOException{
+        logController.writeSimpleLog("deleteUser", "Inicializando procedimento de exclusão de usuario", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        if(!json.getToken().matches(json.getRa())){
+            try {
+                UserController userController = new UserController();
+                Connection conn = DbController.conectDb();
+                ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getRa()));
+                if (rs.next()) {
+                    User user = new User();
+                    user.setRa(rs.getString("ra"));
+                    user.setRole(rs.getString("role"));
+                    if (user.getRole().equals("admin")) {
+                        logController.writeSimpleLog("SERVER: DeleteUser", "Admin access granted", true);
+                        jsonReturn.setMessage(null);
+                    }else{
+                        logController.writeSimpleLog("SERVER: DeleteUser", "Access denied. Client tried to acess other User information", true);
+                        jsonReturn.setStatus(401);
+                        jsonReturn.setOperation(json.getOperacao());
+                        jsonReturn.setMessage("Acesso negado");
+                        return jsonReturn;
+                    }
+                } else {
+                    logController.writeSimpleLog("SERVER: DeleteUser", "User not found", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Usuario nao encontrado");
+                    return jsonReturn;
+                }
+            } catch (SQLException sqle) {
+                logController.writeSimpleLog("SERVER: DeleteUser", "Error on database connection" + sqle.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            } catch (Exception e) {
+                logController.writeSimpleLog("SERVER: DeleteUser", "Error on database connection" + e.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            }
+        }
+        logController.writeSimpleLog("deleteUser", "User validated. Access granted", true);
+        Connection conn;
+        try {
+            logController.writeSimpleLog("deleteUser", "Deleting user", true);
+            conn = DbController.conectDb();
+            UserController userController = new UserController();
+            boolean result = false;
+            result = DbController.executeStatment(conn, userController.deleteUser(), userController.deleteUserList(json.getRa()));
+            if (result) {
+                logController.writeSimpleLog("deleteUser -> 200", "Usuario deletado com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario deletado com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("deleteUser -> 401", "Erro ao deletar usuario", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("deleteUser -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn editUser(Json<?> json) throws IOException{
+        logController.writeSimpleLog("editUser", "Inicializando procedimento de edição de usuario", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        if(!json.getToken().matches(json.getUsuario().getRa())){
+            try {
+                UserController userController = new UserController();
+                Connection conn = DbController.conectDb();
+                ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getUsuario().getRa()));
+                if (rs.next()) {
+                    User user = new User();
+                    user.setRa(rs.getString("ra"));
+                    user.setRole(rs.getString("role"));
+                    if (user.getRole().equals("admin")) {
+                        logController.writeSimpleLog("SERVER: EditUser", "Admin access granted", true);
+                        jsonReturn.setMessage(null);
+                    }else{
+                        logController.writeSimpleLog("SERVER: EditUser", "Access denied. Client tried to acess other User information", true);
+                        jsonReturn.setStatus(401);
+                        jsonReturn.setOperation(json.getOperacao());
+                        jsonReturn.setMessage("Acesso negado");
+                        return jsonReturn;
+                    }
+                } else {
+                    logController.writeSimpleLog("SERVER: EditUser", "User not found", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Usuario nao encontrado");
+                    return jsonReturn;
+                }
+            } catch (SQLException sqle) {
+                logController.writeSimpleLog("SERVER: EditUser", "Error on database connection" + sqle.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            } catch (Exception e) {
+                logController.writeSimpleLog("SERVER: EditUser", "Error on database connection" + e.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            }
+        }
+        logController.writeSimpleLog("SERVER: editUser", "User validated. Access granted", true);
+        Connection conn;
+        try {
+            logController.writeSimpleLog("SERVER: editUser", "Editing user", true);
+            conn = DbController.conectDb();
+            UserController userController = new UserController();
+            boolean result = false;
+            result = DbController.executeStatment(conn, userController.updateUser(), userController.updateUserList(json.getUsuario()));
+            if (result) {
+                logController.writeSimpleLog("editUser -> 200", "Usuario editado com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario editado com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("editUser -> 401", "Erro ao editar usuario", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("editUser -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn saveCategory(Json<?> json) throws IOException{
+        logController.writeSimpleLog("editCategory", "Inicializando procedimento de edição de categoria", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        try {
+            UserController userController = new UserController();
+            Connection conn = DbController.conectDb();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
+            if (rs.next()) {
+                User user = new User();
+                user.setRa(rs.getString("ra"));
+                user.setRole(rs.getString("role"));
+                if (user.getRole().equals("admin")) {
+                    logController.writeSimpleLog("SERVER: EditCategory", "Admin access granted", true);
+                    jsonReturn.setMessage(null);
+                }else{
+                    logController.writeSimpleLog("SERVER: EditCategory", "Access denied. Client tried to acess other User information", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Acesso negado");
+                    return jsonReturn;
+                }
+            } else {
+                logController.writeSimpleLog("SERVER: EditCategory", "User not found", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario nao encontrado");
+                return jsonReturn;
+            }
+        } catch (SQLException sqle) {
+            logController.writeSimpleLog("SERVER: EditCategory", "Error on database connection" + sqle.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("SERVER: EditCategory", "Error on database connection" + e.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
+        Connection conn;
+        try {
+            logController.writeSimpleLog("editCategory", "HIIIIIII", true);
+            conn = DbController.conectDb();
+            CategoryController categoryController = new CategoryController();
+            boolean result = false;
+            if (json.getCategoria() == null) {
+                logController.writeSimpleLog("editCategory -> 401", "Categoria nao encontrada", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Categoria nao encontrada");
+                return jsonReturn;
+            }
+            if (((Category) json.getCategoria()).getId() == 0) {
+                System.out.println(json.getCategoria().toString());
+                result = DbController.executeStatment(conn, categoryController.createCategory(), new ArrayList<>(Arrays.asList(((Category) json.getCategoria()).getName())));
+            } else {
+                result = DbController.executeStatment(conn, categoryController.updateCategory(), categoryController.updateCategoryList((Category) json.getCategoria()));
+            }
+            if (result) {
+                logController.writeSimpleLog("editCategory -> 200", "Categoria editada com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Categoria editada com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("editCategory -> 401", "Erro ao editar categoria", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("editCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn deleteCategory(Json<?> json) throws IOException{
+        logController.writeSimpleLog("deleteCategory", "Inicializando procedimento de exclusão de categoria", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        try {
+            UserController userController = new UserController();
+            Connection conn = DbController.conectDb();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
+            if (rs.next()) {
+                User user = new User();
+                user.setRa(rs.getString("ra"));
+                user.setRole(rs.getString("role"));
+                if (user.getRole().equals("admin")) {
+                    logController.writeSimpleLog("SERVER: DeleteCategory", "Admin access granted", true);
+                    jsonReturn.setMessage(null);
+                }else{
+                    logController.writeSimpleLog("SERVER: DeleteCategory", "Access denied. Client tried to acess other User information", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Acesso negado");
+                    return jsonReturn;
+                }
+            } else {
+                logController.writeSimpleLog("SERVER: DeleteCategory", "User not found", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario nao encontrado");
+                return jsonReturn;
+            }
+        } catch (SQLException sqle) {
+            logController.writeSimpleLog("SERVER: DeleteCategory", "Error on database connection" + sqle.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("SERVER: DeleteCategory", "Error on database connection" + e.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
+        Connection conn;
+        try {
+            logController.writeSimpleLog("deleteCategory", "Deleting category", true);
+            conn = DbController.conectDb();
+            CategoryController categoryController = new CategoryController();
+            boolean result = false;
+            result = DbController.executeStatment(conn, categoryController.deleteCategory(), (Arrays.asList(json.getId())));
+            if (result) {
+                logController.writeSimpleLog("deleteCategory -> 200", "Categoria deletada com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Categoria deletada com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("deleteCategory -> 401", "Erro ao deletar categoria", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("deleteCategory -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn saveWarning(Json<?> json) throws IOException {
+        logController.writeSimpleLog("saveWarning", "Inicializando procedimento de salvar aviso", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        try {
+            UserController userController = new UserController();
+            Connection conn = DbController.conectDb();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
+            if (rs.next()) {
+                User user = new User();
+                user.setRa(rs.getString("ra"));
+                user.setRole(rs.getString("role"));
+                if (user.getRole().equals("admin")) {
+                    logController.writeSimpleLog("SERVER: EditWarning", "Admin access granted", true);
+                    jsonReturn.setMessage(null);
+                } else {
+                    logController.writeSimpleLog("SERVER: EditWarning",
+                            "Access denied. Client tried to acess other User information", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Acesso negado");
+                    return jsonReturn;
+                }
+            } else {
+                logController.writeSimpleLog("SERVER: EditWarning", "User not found", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario nao encontrado");
+                return jsonReturn;
+            }
+        } catch (SQLException sqle) {
+            logController.writeSimpleLog("SERVER: EditWarning", "Error on database connection" + sqle.getMessage(),
+                    true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("SERVER: EditWarning", "Error on database connection" + e.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
+        Connection conn;
+        try {
+            logController.writeSimpleLog("SERVER: saveWarning", "Editing warning", true);
+            conn = DbController.conectDb();
+            WarningController warningController = new WarningController();
+            boolean result = false;
+
+            if (json.getId() == 0) {
+                result = DbController.executeStatment(conn, warningController.createWarning(),
+                        warningController.createWarningList(json.getAvisos()));
+            } else {
+                result = DbController.executeStatment(conn, warningController.updateWarning(),
+                        warningController.updateWarningList(json.getAvisos()));
+            }
+            if (result) {
+                logController.writeSimpleLog("editWarning -> 200", "Aviso editado com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Aviso editado com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("editWarning -> 401", "Erro ao editar aviso", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("editWarning -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }
+
+    public JsonReturn findUserWarnings(Json<?> json) throws IOException {
+        logController.writeSimpleLog("findUserWarnings", "Inicializando procedimento de busca de avisos", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        if (!json.getToken().equals(json.getRa())) {
+            try {
+                UserController userController = new UserController();
+                Connection conn = DbController.conectDb();
+                ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
+                if (rs.next()) {
+                    User user = new User();
+                    user.setRa(json.getToken());
+                    user.setRole(rs.getString("role"));
+                    if (user.getRole().equals("admin")) {
+                        logController.writeSimpleLog("SERVER: FindUserWarnings", "Admin access granted", true);
+                        jsonReturn.setMessage(null);
+                    } else {
+                        logController.writeSimpleLog("SERVER: FindUserWarnings","Access denied. Client tried to acess other User information", true);
+                        jsonReturn.setStatus(401);
+                        jsonReturn.setOperation(json.getOperacao());
+                        jsonReturn.setMessage("Acesso negado");
+                        return jsonReturn;
+                    }
+                } else {
+                    logController.writeSimpleLog("SERVER: FindUserWarnings", "User not found", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Usuario nao encontrado");
+                    return jsonReturn;
+                }
+            } catch (SQLException sqle) {
+                logController.writeSimpleLog("SERVER: FindUserWarnings",
+                        "Error on database connection" + sqle.getMessage(),
+                        true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            } catch (Exception e) {
+                logController.writeSimpleLog("SERVER: FindUserWarnings",
+                        "Error on database connection" + e.getMessage(), true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+                return jsonReturn;
+            }
+        }
+        Connection conn;
+        try {
+            logController.writeSimpleLog("findUserWarnings", "Listing user warnings", true);
+            conn = DbController.conectDb();
+            SubscriptionController subscriptionController = new SubscriptionController();
+            ResultSet rs = DbController.executeQuery(conn, subscriptionController.ListUserSubscription(json.getRa()));
+            List<Avisos> warningsList = new ArrayList<>();
+            while (rs.next()) {
+                WarningController warningController = new WarningController();
+                ResultSet rs2 = DbController.executeQuery(conn, warningController.listWarningByCategory(rs.getInt("category")));
+                while (rs2.next()) {
+                    Avisos warning = new Avisos();
+                    warning.setId(rs2.getInt("idwarning"));
+                    warning.setTitle(rs2.getString("title"));
+                    warning.setDescription(rs2.getString("description"));
+                    Category category = new Category();
+                    category.setId(rs.getInt("category"));
+                    warning.setCategory(category);
+                    warningsList.add(warning);
+                }   
+            }
+        } catch (Exception e) {
+            logController.writeSimpleLog("findUserWarnings -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+        jsonReturn.setStatus(201);
+        jsonReturn.setOperation(json.getOperacao());
+        return jsonReturn;
+    }
+    
+    public JsonReturn deleteWarning(Json<?> json) throws IOException{
+        logController.writeSimpleLog("deleteWarning", "Inicializando procedimento de exclusão de aviso", true);
+        JsonReturn jsonReturn = validateToken(json);
+        if (jsonReturn.getStatus() == 401) {
+            return jsonReturn;
+        }
+        try {
+            UserController userController = new UserController();
+            Connection conn = DbController.conectDb();
+            ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
+            if (rs.next()) {
+                User user = new User();
+                user.setRa(rs.getString("ra"));
+                user.setRole(rs.getString("role"));
+                if (user.getRole().equals("admin")) {
+                    logController.writeSimpleLog("SERVER: DeleteWarning", "Admin access granted", true);
+                    jsonReturn.setMessage(null);
+                }else{
+                    logController.writeSimpleLog("SERVER: DeleteWarning", "Access denied. Client tried to acess other User information", true);
+                    jsonReturn.setStatus(401);
+                    jsonReturn.setOperation(json.getOperacao());
+                    jsonReturn.setMessage("Acesso negado");
+                    return jsonReturn;
+                }
+            } else {
+                logController.writeSimpleLog("SERVER: DeleteWarning", "User not found", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Usuario nao encontrado");
+                return jsonReturn;
+            }
+        } catch (SQLException sqle) {
+            logController.writeSimpleLog("SERVER: DeleteWarning", "Error on database connection" + sqle.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("SERVER: DeleteWarning", "Error on database connection" + e.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
+        Connection conn;
+        try {
+            logController.writeSimpleLog("deleteWarning", "Deleting warning", true);
+            conn = DbController.conectDb();
+            WarningController warningController = new WarningController();
+            boolean result = false;
+            result = DbController.executeStatment(conn, warningController.deleteWarning(), (Arrays.asList(json.getId())));
+            if (result) {
+                logController.writeSimpleLog("deleteWarning -> 200", "Aviso deletado com sucesso", true);
+                jsonReturn.setStatus(200);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("Aviso deletado com sucesso");
+                return jsonReturn;
+            }
+            logController.writeSimpleLog("deleteWarning -> 401", "Erro ao deletar aviso", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        } catch (Exception e) {
+            logController.writeSimpleLog("deleteWarning -> 401", "Erro na conexão com o banco de dados" + e, true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("O servidor nao conseguiu conectar com o banco de dados.");
+            return jsonReturn;
+        }
+    }  
     
 }

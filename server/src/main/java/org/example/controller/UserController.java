@@ -36,7 +36,7 @@ public class UserController {
         return Arrays.asList(user.getName(), user.getRa(), user.getPassword());
     }
     
-    public String updateUser(User user) throws IOException {
+    public String updateUser() throws IOException {
         String sqlQuery;
         sqlQuery = "UPDATE users SET name = ?, ra = ?, password = ? WHERE idUser  = ?";
         logController.writeSimpleLog("SYSTEM: QueryConstruction", "SQL Query created: " + sqlQuery, true);
@@ -48,7 +48,7 @@ public class UserController {
         return Arrays.asList(user.getName(), user.getRa(), user.getPassword(), user.getId());
     }
 
-    public String deleteUser(String ra) throws IOException {
+    public String deleteUser() throws IOException {
         String sqlQuery;
         sqlQuery = "DELETE FROM users WHERE ra = ?";
         logController.writeSimpleLog("SYSTEM: QueryConstruction", "SQL Query created: " + sqlQuery, true);

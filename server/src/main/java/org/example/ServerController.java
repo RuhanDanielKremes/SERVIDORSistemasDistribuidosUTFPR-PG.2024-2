@@ -5,9 +5,11 @@ import java.net.*;
 import org.example.controller.LogController;
 import org.example.controller.OperacaoController;
 import org.example.model.Json;
+import org.example.model.JsonDeserializerCustom;
 import org.example.model.JsonReturn;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*; 
 
@@ -16,7 +18,6 @@ public class ServerController {
     protected static boolean serverContinue = true;
     protected Socket clientSocket;
     public static int port = 22222;
-    
 
     public static void main(String[] args) throws IOException { 
         try (FileWriter writer = new FileWriter("log.txt")) {
@@ -105,23 +106,12 @@ public class ServerController {
                                     try {
                                         logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json.class).toString());
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Passing the json to a class", true);
-                                        Json json = gson.fromJson(jsonInput, Json.class);
-                                        System.out.println("input: " + json.toString());
+                                        Gson gsonbuilder  = new GsonBuilder().registerTypeAdapter(Json.class, new JsonDeserializerCustom()).create();
+                                        Json<?> json = gsonbuilder.fromJson(jsonInput, Json.class);
+                                        // System.out.println("input: " + json.toString());
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
                                         OperacaoController operacaoController = new OperacaoController();
-                                        Json json1 = new Json();
-                                        json1.setOperacao(json.getOperacao());
-                                        json1.setRa(json.getRa());
-                                        json1.setSenha(json.getSenha());
-                                        json1.setNome(json.getNome());
-                                        if (json.getToken() != null) {
-                                            json1.setToken(json.getToken());
-                                        }
-                                        if (json.getId() != 0) {
-                                            json1.setId(json.getId());
-                                        }
-                                        jsonReturn = operacaoController.findOperation(json1);
-                                        System.out.println(jsonReturn.toString());
+                                        jsonReturn = operacaoController.findOperation(json);
                                         String jsonString = gson.toJson(jsonReturn);
                                         System.out.println("output:" + jsonString);
                                         writer.println(jsonString);

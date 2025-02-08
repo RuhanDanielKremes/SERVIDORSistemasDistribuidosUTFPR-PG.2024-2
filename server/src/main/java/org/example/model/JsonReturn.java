@@ -10,7 +10,7 @@ public class JsonReturn {
     private String operacao;
     private List<User> usuarios;
     private List<Category> categorias;
-    private List<Warnings> avisos;
+    private List<Avisos> avisos;
 
     public JsonReturn(){
         this.status = 0;
@@ -70,11 +70,11 @@ public class JsonReturn {
         return categorias;
     }
 
-    public void setWarning(List<Warnings> warning) {
+    public void setWarning(List<Avisos> warning) {
         this.avisos = warning;
     }
 
-    public List<Warnings> getWarning() {
+    public List<Avisos> getWarning() {
         return avisos;
     }
     
@@ -163,7 +163,7 @@ public class JsonReturn {
                     returnToStringWarnings += "]}";
                     return returnToStringWarnings;
                 }
-                for (Warnings warning : this.avisos) {
+                for (Avisos warning : this.avisos) {
                     if (warning.equals(this.avisos.get(this.avisos.size() - 1))) {
                         returnToStringWarnings += warning.toString() + "]}";
                     } else {
@@ -205,6 +205,5 @@ public class JsonReturn {
                         ", mensagem=" + '\'' + mensagem + '\'' +
                         '}';
         }
-        // case "listarAvisos": case "cadastrarUsuarioCategoria": case "descadastrarUsuarioCategoria":
     }
 }

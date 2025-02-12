@@ -1,250 +1,216 @@
-[2025-02-12 18:48:41] Operation: SYSTEM: Server
+[2025-02-12 20:10:03] Operation: SYSTEM: Server
 	New Communication Thread Started
-[2025-02-12 18:48:41] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:03] Operation: SYSTEM: READ JSON
 	Getting file, if Json proced or if on the protocol, else Abort
-[2025-02-12 18:48:41] Operation: SYSTEAM: READ JSON
+[2025-02-12 20:10:03] Operation: SYSTEAM: READ JSON
 	Input equal to a .json file, content underneath
-[2025-02-12 18:48:41] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:03] Operation: SYSTEM: READ JSON
 	Passing the json to a class
-[2025-02-12 18:48:41] Operation: System; Desserializing Json
+[2025-02-12 20:10:03] Operation: System; Desserializing Json
 	Start Procedure
-[2025-02-12 18:48:41] Operation: System: Desserializing Json
+[2025-02-12 20:10:03] Operation: System: Desserializing Json
 	all essential data recivied
-[2025-02-12 18:48:41] Operation: System: Desserializing Json
+[2025-02-12 20:10:03] Operation: System: Desserializing Json
 	all data recivied
-[2025-02-12 18:48:41] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:03] Operation: SYSTEM: READ JSON
 	Sucessfull! Json passed to a class
-[2025-02-12 18:48:41] Operation: SYSTEM: Find protocol Operation
+[2025-02-12 20:10:03] Operation: SYSTEM: Find protocol Operation
 	Shearching for a protocol Operation
-[2025-02-12 18:48:41] Operation: SYSTEM: Find protocol Operation
-	Protocol found: login
-[2025-02-12 18:48:41] Operation: login
-	Inicializado procedimento de login
-[2025-02-12 18:48:41] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:03] Operation: SYSTEM: Find protocol Operation
+	Protocol found: cadastrarUsuario
+[2025-02-12 20:10:03] Operation: cadastrarUsuario
+	Inicializado procedimento de cadastro
+[2025-02-12 20:10:03] Operation: SYSTEM: DB Connetion
+	Starting conection
+[2025-02-12 20:10:03] Operation: SYSTEM:conectarBanco
 	Configurating Connection
-[2025-02-12 18:48:41] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:03] Operation: SYSTEM:conectarBanco
 	Read database props
-[2025-02-12 18:48:41] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:03] Operation: SYSTEM:conectarBanco
 	Database props read sucessfull
-[2025-02-12 18:48:41] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:03] Operation: SYSTEM:conectarBanco
 	Try connection with db
-[2025-02-12 18:48:42] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:04] Operation: SYSTEM:conectarBanco
 	Connection with db sucessfull
-[2025-02-12 18:48:42] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:48:43] Operation: SYSTEM: QueryExecution
+[2025-02-12 20:10:04] Operation: cadastrarUsuario
+	shearching for ra on DB before create
+[2025-02-12 20:10:04] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:04] Operation: SYSTEM: QueryExecution
 	Query executed 
-[2025-02-12 18:48:43] Operation: login -> 200
-	Usuario logado com sucesso
-[2025-02-12 18:49:12] Operation: SYSTEM: Server
-	New Communication Thread Started
-[2025-02-12 18:49:12] Operation: SYSTEM: READ JSON
-	Getting file, if Json proced or if on the protocol, else Abort
-[2025-02-12 18:49:12] Operation: SYSTEAM: READ JSON
-	Input equal to a .json file, content underneath
-[2025-02-12 18:49:12] Operation: SYSTEM: READ JSON
-	Passing the json to a class
-[2025-02-12 18:49:12] Operation: System; Desserializing Json
-	Start Procedure
-[2025-02-12 18:49:12] Operation: System: Desserializing Json
-	all essential data recivied
-[2025-02-12 18:49:12] Operation: System: Desserializing Json
-	all data recivied
-[2025-02-12 18:49:12] Operation: SYSTEM: READ JSON
-	Sucessfull! Json passed to a class
-[2025-02-12 18:49:12] Operation: SYSTEM: Find protocol Operation
-	Shearching for a protocol Operation
-[2025-02-12 18:49:12] Operation: SYSTEM: Find protocol Operation
-	Protocol found: editarUsuario
-[2025-02-12 18:49:12] Operation: editUser
-	Inicializando procedimento de edição de usuario
-[2025-02-12 18:49:12] Operation: validateToken
-	Inicializado procedimento de validação de token
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Configurating Connection
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Read database props
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Database props read sucessfull
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Try connection with db
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Connection with db sucessfull
-[2025-02-12 18:49:12] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:12] Operation: DBUG
-	SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:12] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:12] Operation: SYSTEM: QueryExecution
-	Query executed 
-[2025-02-12 18:49:12] Operation: validateToken -> 200
-	Token valido
-[2025-02-12 18:49:12] Operation: SERVER: editUser
-	User validated. Access granted
-[2025-02-12 18:49:12] Operation: SERVER: editUser
-	Validating user information
-[2025-02-12 18:49:12] Operation: SERVER: editUser
-	Editing user
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Configurating Connection
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Read database props
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Database props read sucessfull
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Try connection with db
-[2025-02-12 18:49:12] Operation: SYSTEM:conectarBanco
-	Connection with db sucessfull
-[2025-02-12 18:49:13] Operation: SYSTEM: QueryConstruction
-	SQL Query created: UPDATE users SET name = ?, ra = ?, password = ? WHERE idUser  = ?
-[2025-02-12 18:49:13] Operation: SYSTEM: QueryConstruction
+[2025-02-12 20:10:04] Operation: SYSTEM: Data Validation
+	Data not found, attempting to registrate new user
+[2025-02-12 20:10:04] Operation: SYSTEM: QueryConstruction
+	SQL Query created: INSERT INTO users (name, ra, password) VALUES (?, ?, ?)
+[2025-02-12 20:10:04] Operation: SYSTEM: QueryConstruction
 	User added to list
-[2025-02-12 18:49:13] Operation: SYSTEM: StatmentExecution
+[2025-02-12 20:10:04] Operation: SYSTEM: StatmentExecution
 	Creating Steatment 
-[2025-02-12 18:49:13] Operation: SYSTEM: StatmentExecution
+[2025-02-12 20:10:04] Operation: SYSTEM: StatmentExecution
 	Statment created 
-[2025-02-12 18:49:13] Operation: SYSTEM: StatmentExecution
+[2025-02-12 20:10:04] Operation: SYSTEM: StatmentExecution
 	Executing Statment 
-[2025-02-12 18:49:13] Operation: SYSTEM: StatmentExecution
+[2025-02-12 20:10:04] Operation: SYSTEM: StatmentExecution
 	Sucess! Statment executed 
-[2025-02-12 18:49:13] Operation: editUser -> 201
-	Edição realizada com sucesso.
-[2025-02-12 18:49:32] Operation: SYSTEM: Server
+[2025-02-12 20:10:04] Operation: cadastrarUsuario -> 201
+	Usuario cadastrado com sucesso!
+[2025-02-12 20:10:21] Operation: SYSTEM: Server
 	New Communication Thread Started
-[2025-02-12 18:49:32] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:21] Operation: SYSTEM: READ JSON
 	Getting file, if Json proced or if on the protocol, else Abort
-[2025-02-12 18:49:32] Operation: SYSTEAM: READ JSON
+[2025-02-12 20:10:21] Operation: SYSTEAM: READ JSON
 	Input equal to a .json file, content underneath
-[2025-02-12 18:49:32] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:21] Operation: SYSTEM: READ JSON
 	Passing the json to a class
-[2025-02-12 18:49:32] Operation: System; Desserializing Json
+[2025-02-12 20:10:21] Operation: System; Desserializing Json
 	Start Procedure
-[2025-02-12 18:49:32] Operation: System: Desserializing Json
+[2025-02-12 20:10:21] Operation: System: Desserializing Json
 	all essential data recivied
-[2025-02-12 18:49:32] Operation: System: Desserializing Json
+[2025-02-12 20:10:21] Operation: System: Desserializing Json
 	all data recivied
-[2025-02-12 18:49:32] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:21] Operation: SYSTEM: READ JSON
 	Sucessfull! Json passed to a class
-[2025-02-12 18:49:32] Operation: SYSTEM: Find protocol Operation
+[2025-02-12 20:10:21] Operation: SYSTEM: Find protocol Operation
 	Shearching for a protocol Operation
-[2025-02-12 18:49:32] Operation: SYSTEM: Find protocol Operation
-	Protocol found: listarUsuarios
-[2025-02-12 18:49:32] Operation: listUsers
-	Inicializando procedimento de listagem de usuarios
-[2025-02-12 18:49:32] Operation: validateToken
-	Inicializado procedimento de validação de token
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:21] Operation: SYSTEM: Find protocol Operation
+	Protocol found: login
+[2025-02-12 20:10:21] Operation: login
+	Inicializado procedimento de login
+[2025-02-12 20:10:21] Operation: SYSTEM:conectarBanco
 	Configurating Connection
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:21] Operation: SYSTEM:conectarBanco
 	Read database props
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:21] Operation: SYSTEM:conectarBanco
 	Database props read sucessfull
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:21] Operation: SYSTEM:conectarBanco
 	Try connection with db
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:21] Operation: SYSTEM:conectarBanco
 	Connection with db sucessfull
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:32] Operation: DBUG
-	SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryExecution
+[2025-02-12 20:10:21] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:21] Operation: SYSTEM: QueryExecution
 	Query executed 
-[2025-02-12 18:49:32] Operation: validateToken -> 200
-	Token valido
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Configurating Connection
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Read database props
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Database props read sucessfull
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Try connection with db
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Connection with db sucessfull
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryExecution
-	Query executed 
-[2025-02-12 18:49:32] Operation: SERVER: ListUsers
-	Admin access granted
-[2025-02-12 18:49:32] Operation: listUsers
-	Listing users
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Configurating Connection
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Read database props
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Database props read sucessfull
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Try connection with db
-[2025-02-12 18:49:32] Operation: SYSTEM:conectarBanco
-	Connection with db sucessfull
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users
-[2025-02-12 18:49:32] Operation: SYSTEM: QueryExecution
-	Query executed 
-[2025-02-12 18:49:50] Operation: SYSTEM: Server
+[2025-02-12 20:10:21] Operation: login -> 200
+	Usuario logado com sucesso
+[2025-02-12 20:10:25] Operation: SYSTEM: Server
 	New Communication Thread Started
-[2025-02-12 18:49:50] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:25] Operation: SYSTEM: READ JSON
 	Getting file, if Json proced or if on the protocol, else Abort
-[2025-02-12 18:49:50] Operation: SYSTEAM: READ JSON
+[2025-02-12 20:10:25] Operation: SYSTEAM: READ JSON
 	Input equal to a .json file, content underneath
-[2025-02-12 18:49:50] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:25] Operation: SYSTEM: READ JSON
 	Passing the json to a class
-[2025-02-12 18:49:50] Operation: System; Desserializing Json
+[2025-02-12 20:10:25] Operation: System; Desserializing Json
 	Start Procedure
-[2025-02-12 18:49:50] Operation: System: Desserializing Json
+[2025-02-12 20:10:25] Operation: System: Desserializing Json
 	all essential data recivied
-[2025-02-12 18:49:50] Operation: System: Desserializing Json
+[2025-02-12 20:10:25] Operation: System: Desserializing Json
 	all data recivied
-[2025-02-12 18:49:50] Operation: SYSTEM: READ JSON
+[2025-02-12 20:10:25] Operation: SYSTEM: READ JSON
 	Sucessfull! Json passed to a class
-[2025-02-12 18:49:50] Operation: SYSTEM: Find protocol Operation
+[2025-02-12 20:10:25] Operation: SYSTEM: Find protocol Operation
 	Shearching for a protocol Operation
-[2025-02-12 18:49:50] Operation: SYSTEM: Find protocol Operation
-	Protocol found: localizarUsuario
-[2025-02-12 18:49:50] Operation: findUser
-	Inicializando procedimento de busca de usuario
-[2025-02-12 18:49:50] Operation: validateToken
+[2025-02-12 20:10:25] Operation: SYSTEM: Find protocol Operation
+	Protocol found: listarCategorias
+[2025-02-12 20:10:25] Operation: listCategory
+	Inicializado procedimento de listagem de categorias
+[2025-02-12 20:10:25] Operation: validateToken
 	Inicializado procedimento de validação de token
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:25] Operation: SYSTEM:conectarBanco
 	Configurating Connection
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:25] Operation: SYSTEM:conectarBanco
 	Read database props
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:25] Operation: SYSTEM:conectarBanco
 	Database props read sucessfull
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:25] Operation: SYSTEM:conectarBanco
 	Try connection with db
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:25] Operation: SYSTEM:conectarBanco
 	Connection with db sucessfull
-[2025-02-12 18:49:50] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:50] Operation: DBUG
-	SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:50] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:50] Operation: SYSTEM: QueryExecution
+[2025-02-12 20:10:26] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:26] Operation: DBUG
+	SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:26] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:26] Operation: SYSTEM: QueryExecution
 	Query executed 
-[2025-02-12 18:49:50] Operation: validateToken -> 200
+[2025-02-12 20:10:26] Operation: validateToken -> 200
 	Token valido
-[2025-02-12 18:49:50] Operation: findUser
-	User validated. Access granted
-[2025-02-12 18:49:50] Operation: findUser
-	Listing user
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:26] Operation: SYSTEM:conectarBanco
 	Configurating Connection
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:26] Operation: SYSTEM:conectarBanco
 	Read database props
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:26] Operation: SYSTEM:conectarBanco
 	Database props read sucessfull
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:26] Operation: SYSTEM:conectarBanco
 	Try connection with db
-[2025-02-12 18:49:50] Operation: SYSTEM:conectarBanco
+[2025-02-12 20:10:26] Operation: SYSTEM:conectarBanco
 	Connection with db sucessfull
-[2025-02-12 18:49:50] Operation: SYSTEM: QueryConstruction
-	SQL Query created: SELECT * FROM users WHERE ra = '2524198'
-[2025-02-12 18:49:50] Operation: SYSTEM: QueryExecution
+[2025-02-12 20:10:26] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM categories
+[2025-02-12 20:10:26] Operation: SYSTEM: QueryExecution
 	Query executed 
+[2025-02-12 20:10:26] Operation: listCategory
+	Buscando categorias
+[2025-02-12 20:10:42] Operation: SYSTEM: Server
+	New Communication Thread Started
+[2025-02-12 20:10:42] Operation: SYSTEM: READ JSON
+	Getting file, if Json proced or if on the protocol, else Abort
+[2025-02-12 20:10:42] Operation: SYSTEAM: READ JSON
+	Input equal to a .json file, content underneath
+[2025-02-12 20:10:42] Operation: SYSTEM: READ JSON
+	Passing the json to a class
+[2025-02-12 20:10:42] Operation: System; Desserializing Json
+	Start Procedure
+[2025-02-12 20:10:42] Operation: System: Desserializing Json
+	all essential data recivied
+[2025-02-12 20:10:42] Operation: System: Desserializing Json
+	trying to parse Categoria G Type Class
+[2025-02-12 20:10:42] Operation: System: Desserializing Json
+	Categoria G Type Class parsed
+[2025-02-12 20:10:42] Operation: SYSTEM: READ JSON
+	Sucessfull! Json passed to a class
+[2025-02-12 20:10:42] Operation: SYSTEM: Find protocol Operation
+	Shearching for a protocol Operation
+[2025-02-12 20:10:42] Operation: SYSTEM: Find protocol Operation
+	Protocol found: salvarCategoria
+[2025-02-12 20:10:42] Operation: editCategory
+	Inicializando procedimento de edição de categoria
+[2025-02-12 20:10:42] Operation: validateToken
+	Inicializado procedimento de validação de token
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Configurating Connection
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Read database props
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Database props read sucessfull
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Try connection with db
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Connection with db sucessfull
+[2025-02-12 20:10:42] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:42] Operation: DBUG
+	SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:42] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:42] Operation: SYSTEM: QueryExecution
+	Query executed 
+[2025-02-12 20:10:42] Operation: validateToken -> 200
+	Token valido
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Configurating Connection
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Read database props
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Database props read sucessfull
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Try connection with db
+[2025-02-12 20:10:42] Operation: SYSTEM:conectarBanco
+	Connection with db sucessfull
+[2025-02-12 20:10:42] Operation: SYSTEM: QueryConstruction
+	SQL Query created: SELECT * FROM users WHERE ra = '9001999'
+[2025-02-12 20:10:42] Operation: SYSTEM: QueryExecution
+	Query executed 
+[2025-02-12 20:10:42] Operation: SERVER: EditCategory
+	Access denied. Client tried to acess other User information

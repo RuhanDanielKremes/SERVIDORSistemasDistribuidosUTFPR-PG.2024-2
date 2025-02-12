@@ -600,13 +600,12 @@ public class OperacaoController{
                         rs = DbController.executeQuery(conn, userController.listUsers());
                         List<User> userList = new ArrayList<>();
                         while (rs.next()) {
-                            User userlistage = new User();
-                            // userlistage.setId(rs.getInt("idUser"));
-                            userlistage.setName(rs.getString("name"));
-                            userlistage.setRa(rs.getString("ra"));
-                            // userlistage.setRole(rs.getString("role"));
-                            userlistage.setPassword(rs.getString("password"));
-                            userList.add(user);
+                            User user1 = new User();
+                            user1.setId(rs.getInt("idUser"));
+                            user1.setName(rs.getString("name"));
+                            user1.setRa(rs.getString("ra"));
+                            user1.setRole(rs.getString("role"));
+                            userList.add(user1);
                         }
                         jsonReturn.setUser(userList);
                     } catch (Exception e) {
@@ -846,14 +845,14 @@ public class OperacaoController{
         }
         logController.writeSimpleLog("SERVER: editUser", "User validated. Access granted", true);
         logController.writeSimpleLog("SERVER: editUser", "Validating user information", true);
-        if (json.getUsuario().getName().length() < 3 || json.getUsuario().getName().length() > 50
-                || !json.getUsuario().getName().matches(("^[A-Z]+$"))) {
+        if (json.getUsuario().getName().length() > 50
+                || !json.getUsuario().getName().matches(("^[A-Z\\s]+$"))) {
                     System.out.println(json.getUsuario().toString());
             if (json.getUsuario().getName().length() < 3) {
                 logController.writeSimpleLog("editUser -> 401", "Nome muito Curto", true);
             } else if (json.getUsuario().getName().length() > 50) {
                 logController.writeSimpleLog("editUser -> 401", "Nome muito Longo", true);
-            } else if (!json.getUsuario().getName().matches(("^[A-Z]+$"))){
+            } else if (!json.getUsuario().getName().matches(("^[A-Z\\s]+$"))){
                 logController.writeSimpleLog("editUser -> 401", "Nome não contem apenas maiusculas", true);
             }
             // logController.writeSimpleLog("editUser -> 401", "Nome muito Curto", true);

@@ -193,6 +193,17 @@ public class JsonReturn {
                         ", operacao=" + '\'' + operacao + '\'' +
                         ", mensagem=" + '\'' + mensagem + '\'' +
                         '}';
+            case "listarUsuarios":
+                if (status != 201) {
+                    return "(status=" + status +
+                            ", operacao=" + '\'' + operacao + '\'' +
+                            ", mensagem=" + '\'' + mensagem + '\'' +
+                            '}';
+                }
+                return "{status=" + status +
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", usuarios=" + usuarios.toString() +
+                        '}';
             default:
                 if (status != 200) {
                 return "{status=" + status + 

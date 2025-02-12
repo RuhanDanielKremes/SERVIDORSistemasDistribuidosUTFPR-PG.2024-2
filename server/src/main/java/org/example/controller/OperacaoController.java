@@ -101,35 +101,35 @@ public class OperacaoController{
             logController.writeSimpleLog("cadastrarUsuario -> 401", "RA invalido", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
-            jsonReturn.setMessage("RA invalido");
+            jsonReturn.setMessage("Os campos recebidos não são válidos");
             return jsonReturn;
         }
         if (user.getPassword().length() < 8) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "Senha muito Curta", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
-            jsonReturn.setMessage("Senha muito curta");
+            jsonReturn.setMessage("Os campos recebidos não são válidos");
             return jsonReturn;
         }
         if (user.getPassword().length() > 20) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "Senha muito Longa", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
-            jsonReturn.setMessage("Senha muito longa");
+            jsonReturn.setMessage("Os campos recebidos não são válidos");
             return jsonReturn;
         }
         if (user.getName().length() > 50) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "Nome muito Longo", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
-            jsonReturn.setMessage("Nome muito longo");
+            jsonReturn.setMessage("Os campos recebidos não são válidos");
             return jsonReturn;
         }
         if (!(user.getName().matches("[A-Z\\s]+"))) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "Nome invalido: Uso de caracteres fora de padrão", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());
-            jsonReturn.setMessage("Nome invalido, use apenas letras maiusculas");
+            jsonReturn.setMessage("Os campos recebidos não são válidos");
             return jsonReturn;
         }
 
@@ -143,11 +143,11 @@ public class OperacaoController{
                 if (!rs.next()) {
                     logController.writeSimpleLog("SYSTEM: Data Validation", "Data not found, attempting to registrate new user", false);
                     try {
-                        DbController.executeStatment(conn, userController.createUser(user), userController.createUserList(user));
-                        logController.writeSimpleLog("cadastrarUsuario -> 200", "Usuario cadastrado com sucesso!", true);
+                        DbController.executeStatment(conn, userController.createUser(), userController.createUserList(user));
+                        logController.writeSimpleLog("cadastrarUsuario -> 201", "Usuario cadastrado com sucesso!", true);
                         jsonReturn.setStatus(201);
                         jsonReturn.setOperation(json.getOperacao());
-                        jsonReturn.setMessage("Usuario cadastrado com sucesso!");
+                        jsonReturn.setMessage("Cadastro realizado com sucesso");
                         return jsonReturn;
                     } catch (Exception e) {
                         logController.writeSimpleLog("cadastrarUsuario -> 401", "Erro ao cadastrar usuario", true);
@@ -160,7 +160,7 @@ public class OperacaoController{
                     logController.writeSimpleLog("cadastrarUsuario -> 401", "Usuario ja cadastrado", true);
                     jsonReturn.setStatus(401);
                     jsonReturn.setOperation(json.getOperacao());
-                    jsonReturn.setMessage("Não foi cadastrar pois o usuario informado ja existe");
+                    jsonReturn.setMessage("Usuário já está cadastrado no sistema");
                     return jsonReturn;                    
                 }
             }catch (Exception e){
@@ -601,10 +601,11 @@ public class OperacaoController{
                         List<User> userList = new ArrayList<>();
                         while (rs.next()) {
                             User userlistage = new User();
-                            userlistage.setId(rs.getInt("idUser"));
+                            // userlistage.setId(rs.getInt("idUser"));
                             userlistage.setName(rs.getString("name"));
                             userlistage.setRa(rs.getString("ra"));
-                            userlistage.setRole(rs.getString("role"));
+                            // userlistage.setRole(rs.getString("role"));
+                            userlistage.setPassword(rs.getString("password"));
                             userList.add(user);
                         }
                         jsonReturn.setUser(userList);
@@ -807,7 +808,7 @@ public class OperacaoController{
             try {
                 UserController userController = new UserController();
                 Connection conn = DbController.conectDb();
-                ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getUsuario().getRa()));
+                ResultSet rs = DbController.executeQuery(conn, userController.getUser(json.getToken()));
                 if (rs.next()) {
                     User user = new User();
                     user.setRa(rs.getString("ra"));
@@ -844,6 +845,37 @@ public class OperacaoController{
             }
         }
         logController.writeSimpleLog("SERVER: editUser", "User validated. Access granted", true);
+        logController.writeSimpleLog("SERVER: editUser", "Validating user information", true);
+        if (json.getUsuario().getName().length() < 3 || json.getUsuario().getName().length() > 50
+                || !json.getUsuario().getName().matches(("^[A-Z]+$"))) {
+                    System.out.println(json.getUsuario().toString());
+            if (json.getUsuario().getName().length() < 3) {
+                logController.writeSimpleLog("editUser -> 401", "Nome muito Curto", true);
+            } else if (json.getUsuario().getName().length() > 50) {
+                logController.writeSimpleLog("editUser -> 401", "Nome muito Longo", true);
+            } else if (!json.getUsuario().getName().matches(("^[A-Z]+$"))){
+                logController.writeSimpleLog("editUser -> 401", "Nome não contem apenas maiusculas", true);
+            }
+            // logController.writeSimpleLog("editUser -> 401", "Nome muito Curto", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Os campos recebidos não são válidos.");
+            return jsonReturn;
+        }
+        if (json.getUsuario().getRa().length() != 7) {
+            logController.writeSimpleLog("editUser -> 401", "RA invalido", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Os campos recebidos não são válidos.");
+            return jsonReturn;
+        }
+        if (json.getUsuario().getPassword().length() < 8 || json.getUsuario().getPassword().length() > 20) {
+            logController.writeSimpleLog("editUser -> 401", "Senha muito Curta", true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Os campos recebidos não são válidos.");
+            return jsonReturn;
+        }
         Connection conn;
         try {
             logController.writeSimpleLog("SERVER: editUser", "Editing user", true);
@@ -852,10 +884,10 @@ public class OperacaoController{
             boolean result = false;
             result = DbController.executeStatment(conn, userController.updateUser(), userController.updateUserList(json.getUsuario()));
             if (result) {
-                logController.writeSimpleLog("editUser -> 200", "Usuario editado com sucesso", true);
-                jsonReturn.setStatus(200);
+                logController.writeSimpleLog("editUser -> 201", "Edição realizada com sucesso.", true);
+            jsonReturn.setStatus(201);
                 jsonReturn.setOperation(json.getOperacao());
-                jsonReturn.setMessage("Usuario editado com sucesso");
+                jsonReturn.setMessage("Edição realizada com sucesso.");
                 return jsonReturn;
             }
             logController.writeSimpleLog("editUser -> 401", "Erro ao editar usuario", true);
@@ -1001,6 +1033,32 @@ public class OperacaoController{
             return jsonReturn;
         }
         Connection conn;
+        try{
+            logController.writeSimpleLog("SERVER: DeleteCategory", "Verifying if category does not have any warnings", false);
+            conn = DbController.conectDb();
+            WarningController warningController = new WarningController();
+            ResultSet rs = DbController.executeQuery(conn, warningController.listWarningByCategory((Integer) json.getId()));
+            if (rs.next()) {
+                logController.writeSimpleLog("SERVER: DeleteCategory", "Category has warnings", true);
+                jsonReturn.setStatus(401);
+                jsonReturn.setOperation(json.getOperacao());
+                jsonReturn.setMessage("A categoria nao pode ser deletada pois possui avisos cadastrados.");
+                return jsonReturn;
+            }
+        } catch (SQLException sqle) {
+            logController.writeSimpleLog("SERVER: DeleteCategory", "Error on database connection" + sqle.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
+        catch (Exception e) {
+            logController.writeSimpleLog("SERVER: DeleteCategory", "Error on database connection" + e.getMessage(), true);
+            jsonReturn.setStatus(401);
+            jsonReturn.setOperation(json.getOperacao());
+            jsonReturn.setMessage("Erro ao buscar usuario no banco de dados");
+            return jsonReturn;
+        }
         try {
             logController.writeSimpleLog("deleteCategory", "Deleting category", true);
             conn = DbController.conectDb();

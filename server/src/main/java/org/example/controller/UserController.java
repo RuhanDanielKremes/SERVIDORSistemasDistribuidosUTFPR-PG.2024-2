@@ -24,7 +24,7 @@ public class UserController {
         return sqlQuery;
     }
 
-    public String createUser(User user) throws IOException {
+    public String createUser() throws IOException {
         String sqlQuery;
         sqlQuery = "INSERT INTO users (name, ra, password) VALUES (?, ?, ?)";
         logController.writeSimpleLog("SYSTEM: QueryConstruction", "SQL Query created: " + sqlQuery, true);

@@ -187,7 +187,6 @@ public class OperacaoController{
         user.setRa(json.getRa());
         user.setPassword(json.getSenha());
         jsonReturn.setOperation(json.getOperacao());
-
         if (user.getRa().length() != 7) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "RA invalido", true);
             jsonReturn.setStatus(401);
@@ -225,6 +224,7 @@ public class OperacaoController{
                     logController.writeSimpleLog("login -> 200", "Usuario logado com sucesso", true);
                     jsonReturn.setStatus(200);
                     jsonReturn.setToken(user.getRa());
+                    jsonReturn.setOperation(null);
                     user.setName(rs.getString("name"));
                     user.setRole(rs.getString("role"));
                     user.setId(rs.getInt("idUser"));
@@ -601,13 +601,14 @@ public class OperacaoController{
                         List<User> userList = new ArrayList<>();
                         while (rs.next()) {
                             User user1 = new User();
-                            user1.setId(rs.getInt("idUser"));
+                            // user1.setId(rs.getInt("idUser"));
                             user1.setName(rs.getString("name"));
                             user1.setRa(rs.getString("ra"));
-                            user1.setRole(rs.getString("role"));
+                            // user1.setRole(rs.getString("role"));
+                            user1.setPassword(rs.getString("password"));
                             userList.add(user1);
                         }
-                        jsonReturn.setUser(userList);
+                        jsonReturn.setUsers(userList);
                     } catch (Exception e) {
                         logController.writeSimpleLog("listUsers -> 401", "Erro na conexão com o banco de dados" + e, true);
                         jsonReturn.setStatus(401);
@@ -703,13 +704,14 @@ public class OperacaoController{
             List<User> userList = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("idUser"));
+                // user.setId(rs.getInt("idUser"));
                 user.setName(rs.getString("name"));
                 user.setRa(rs.getString("ra"));
-                user.setRole(rs.getString("role"));
+                // user.setRole(rs.getString("role"));
+                user.setPassword(rs.getString("password"));
                 userList.add(user);
             }
-            jsonReturn.setUser(userList);
+            jsonReturn.setUsers(userList);
         } catch (Exception e) {
             logController.writeSimpleLog("findUser -> 401", "Erro na conexão com o banco de dados" + e, true);
             jsonReturn.setStatus(401);

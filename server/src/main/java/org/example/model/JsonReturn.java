@@ -11,15 +11,17 @@ public class JsonReturn {
     private List<User> usuarios;
     private List<Category> categorias;
     private List<Avisos> avisos;
+    private User usuario;
 
     public JsonReturn(){
         this.status = 0;
-        this.token = "";
-        this.mensagem = "";
-        this.operacao = "";
+        this.token = null;
+        this.mensagem = null;
+        this.operacao = null;
         this.usuarios = null;
         this.categorias = null;
         this.avisos = null;
+        this.usuario = null;
     }
 
     public void setStatus(int status) {
@@ -54,11 +56,11 @@ public class JsonReturn {
         return operacao;
     }
 
-    public void setUser(List<User> user) {
+    public void setUsers(List<User> user) {
         this.usuarios = user;
     }
 
-    public List<User> getUser() {
+    public List<User> getUsers() {
         return usuarios;
     }
 
@@ -76,6 +78,14 @@ public class JsonReturn {
 
     public List<Avisos> getWarning() {
         return avisos;
+    }
+
+    public void setUser(User user) {
+        this.usuario = user;
+    }
+
+    public User getUser() {
+        return usuario;
     }
     
     @Override
@@ -203,6 +213,17 @@ public class JsonReturn {
                 return "{status=" + status +
                         ", operacao=" + '\'' + operacao + '\'' +
                         ", usuarios=" + usuarios.toString() +
+                        '}';
+            case "localizarUsuario":
+                if (status != 201) {
+                    return "{status=" + status +
+                            ", operacao=" + '\'' + operacao + '\'' +
+                            ", mensagem=" + '\'' + mensagem + '\'' +
+                            '}';
+                }
+                return "{status=" + status +
+                        ", operacao=" + '\'' + operacao + '\'' +
+                        ", usuario=" + usuario.toString() +
                         '}';
             default:
                 if (status != 200) {

@@ -38,14 +38,14 @@ public class UserController {
     
     public String updateUser() throws IOException {
         String sqlQuery;
-        sqlQuery = "UPDATE users SET name = ?, ra = ?, password = ? WHERE idUser  = ?";
+        sqlQuery = "UPDATE users SET name = ?, ra = ?, password = ? WHERE ra  = ?";
         logController.writeSimpleLog("SYSTEM: QueryConstruction", "SQL Query created: " + sqlQuery, true);
         return sqlQuery;
     }
 
     public List<?> updateUserList(User user) throws IOException {
         logController.writeSimpleLog("SYSTEM: QueryConstruction", "User added to list", true);
-        return Arrays.asList(user.getName(), user.getRa(), user.getPassword(), user.getId());
+        return Arrays.asList(user.getName(), user.getRa(), user.getPassword(), user.getRa());
     }
 
     public String deleteUser() throws IOException {

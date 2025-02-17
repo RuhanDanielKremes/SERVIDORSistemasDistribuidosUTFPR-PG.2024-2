@@ -1203,8 +1203,8 @@ public class OperacaoController{
             conn = DbController.conectDb();
             WarningController warningController = new WarningController();
             boolean result = false;
-
-            if (json.getAvisos().getCategory() == 0) {
+            System.out.println(json.getAvisos().toString());
+            if (json.getAvisos().getId() == 0) {
                 result = DbController.executeStatment(conn, warningController.createWarning(),
                         warningController.createWarningList(json.getAvisos()));
             } else {

@@ -128,7 +128,7 @@ public class OperacaoController{
             jsonReturn.setMessage("Os campos recebidos não são válidos");
             return jsonReturn;
         }
-        if (!(user.getName().matches("[A-Z\\s]+"))) {
+        if (!(user.getName().matches("[A-Za-z\\s]+"))) {
             logController.writeSimpleLog("cadastrarUsuario -> 401", "Nome invalido: Uso de caracteres fora de padrão", true);
             jsonReturn.setStatus(401);
             jsonReturn.setOperation(json.getOperacao());

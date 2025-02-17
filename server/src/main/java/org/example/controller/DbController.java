@@ -100,7 +100,7 @@ public class DbController {
         try {
             logController.writeSimpleLog("SYSTEM: StatmentExecution", "Creating Steatment ", true);
             PreparedStatement pstmt = conn.prepareStatement(query);
-            for(int i = 0; i < dataList.size(); i++){
+            for (int i = 0; i < dataList.size(); i++) {
                 switch (dataList.get(i).getClass().getSimpleName()) {
                     case "Integer":
                         pstmt.setInt(i+1, Integer.parseInt(dataList.get(i).toString()));

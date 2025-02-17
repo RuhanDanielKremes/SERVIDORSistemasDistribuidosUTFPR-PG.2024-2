@@ -7,6 +7,9 @@ import org.example.controller.OperacaoController;
 import org.example.model.Json;
 import org.example.model.JsonDeserializerCustom;
 import org.example.model.JsonReturn;
+import org.example.model.JsonReturnCategory;
+import org.example.model.JsonReturnCategory2;
+import org.example.model.JsonReturnWarning;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -111,8 +114,28 @@ public class ServerController {
                                         // System.out.println("input: " + json.toString());
                                         logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
                                         OperacaoController operacaoController = new OperacaoController();
-                                        jsonReturn = operacaoController.findOperation(json);
-                                        String jsonString = gson.toJson(jsonReturn);
+                                        String jsonString;
+                                        switch (json.getOperacao()) {
+                                            case "listarUsuarioCategorias":
+                                                JsonReturnCategory jsonReturnCategory = new JsonReturnCategory();
+                                                jsonReturnCategory = operacaoController.findUserSubscriptionsCategoriesJRC(json);
+                                                jsonString = gson.toJson(jsonReturnCategory);                                                
+                                            break;
+                                            case "localizarCategoria":
+                                                JsonReturnCategory2 jsonReturnCategory2 = new JsonReturnCategory2();
+                                                jsonReturnCategory2 = operacaoController.findCategory(json);
+                                                jsonString = gson.toJson(jsonReturnCategory2);
+                                            break;
+                                            case "localizarAviso":
+                                                JsonReturnWarning jsonReturnWarning = new JsonReturnWarning();
+                                                jsonReturnWarning = operacaoController.findWarning(json);
+                                                jsonString = gson.toJson(jsonReturnWarning);
+                                            break;
+                                            default:
+                                                jsonReturn = operacaoController.findOperation(json);
+                                                jsonString = gson.toJson(jsonReturn);
+                                            break;
+                                        }
                                         System.out.println("output:" + jsonString);
                                         writer.println(jsonString);
                                     } catch (Exception e) {

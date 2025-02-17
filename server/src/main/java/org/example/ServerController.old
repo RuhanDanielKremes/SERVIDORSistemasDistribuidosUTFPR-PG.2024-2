@@ -1,0 +1,261 @@
+package org.example;
+
+import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.example.controller.LogController;
+import org.example.controller.OperacaoController;
+import org.example.model.Json;
+import org.example.model.JsonReturn;
+
+import com.google.gson.Gson;
+
+import java.io.*; 
+
+public class ServerController { 
+    static LogController logController = new LogController();
+        protected static boolean serverContinue = true;
+        protected Socket clientSocket;
+        public static int port = 22222;
+        
+        private static List<ClientHandler> clientHandlers = new ArrayList<>();
+        private static ScheduledExecutorService executor;
+    
+        static class ClientHandler implements Runnable {
+            private final Socket clientSocket;
+            private boolean active = true; // Status da conexão
+            private final String clientId;
+    
+            public ClientHandler(Socket clientSocket) {
+                this.clientSocket = clientSocket;
+                this.clientId = clientSocket.getRemoteSocketAddress().toString();
+            }
+    
+            @Override
+            public void run() {
+                try{
+                    int timeout = 0;
+                    while (true) {
+                        BufferedReader reader = null;
+                        PrintWriter writer = null;
+                        PushbackInputStream in = new PushbackInputStream(clientSocket.getInputStream());
+                        try {
+                            clientSocket.setSoTimeout(1000);
+                            int data = 0;
+                            if (in.available() > 0) {
+                                data = in.read();
+                            }else{
+                                timeout++;
+                                if (timeout % 30 == 0) {
+                                    data = in.read();
+                                    if (data == -1) {
+                                        clientSocket.close();
+                                    } else {
+                                        in.unread(data);
+                                    }
+                                } else{
+                                    if (timeout == 360) {
+                                        clientSocket.close();
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Conexão fechada pelo cliente:" + e.getMessage());
+                            clientSocket.close();
+                        }
+
+                        reader = new BufferedReader(new InputStreamReader(in));
+                        writer = new PrintWriter(clientSocket.getOutputStream(), true);
+                        String jsonInput;
+                        JsonReturn jsonReturn = new JsonReturn();
+                        try {
+                            if ((jsonInput = reader.readLine()) != null) {
+                                logController.writeSimpleLog("SYSTEM: Server", "New Communication Thread Started", true);
+                                System.out.println ("New Communication Thread Started");
+                                System.out.println("input: " + jsonInput);
+                                logController.writeSimpleLog("SYSTEM: READ JSON", "Getting file, if Json proced or if on the protocol, else Abort", true);
+                                Gson gson = new Gson();
+                                try {
+                                    logController.writeLogJson("SYSTEAM: READ JSON", "Input equal to a .json file, content underneath", gson.fromJson(jsonInput, Json.class).toString());
+                                    logController.writeSimpleLog("SYSTEM: READ JSON", "Passing the json to a class", true);
+                                    Json json = gson.fromJson(jsonInput, Json.class);
+                                    System.out.println("input: " + json.toString());
+                                    logController.writeSimpleLog("SYSTEM: READ JSON", "Sucessfull! Json passed to a class", true);
+                                    OperacaoController operacaoController = new OperacaoController();
+                                    Json json1 = new Json();
+                                    json1.setOperacao(json.getOperacao());
+                                    json1.setRa(json.getRa());
+                                    json1.setSenha(json.getSenha());
+                                    json1.setNome(json.getNome());
+                                    jsonReturn = operacaoController.findOperation(json1);
+                                    System.out.println(jsonReturn.toString());
+                                    String jsonString = gson.toJson(jsonReturn);
+                                    writer.println(jsonString);
+                                } catch (Exception e) {
+                                    logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
+                                    jsonReturn.setStatus(401);
+                                    jsonReturn.setOperation("Json");
+                                    jsonReturn.setMessage("Nao foi possivel ler o json recebido");
+                                    System.out.println("Error! Json do not pass to a class" + e.getMessage());
+                                    String jsonString = gson.toJson(jsonReturn);
+                                    writer.println(jsonString);
+                                }
+                            }else {
+                                logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class", true);
+                                jsonReturn.setStatus(401);
+                                jsonReturn.setOperation("Json");
+                                jsonReturn.setMessage("Nao foi possivel ler o json recebido");
+                            }
+                        } catch (NullPointerException npe) {
+                            logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + npe.getMessage(), true);
+                            System.err.println("Problem with Communication Server");
+                            clientSocket.close();
+                        } catch (Exception e) {
+                            logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
+                        System.err.println("Problem with Communication Server");
+                        clientSocket.close();
+                    }
+                }
+            }catch (NullPointerException npe) {
+                try {
+                    logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + npe.getMessage(), true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.err.println("Problem with Communication Server" + npe.getMessage());
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                try {
+                    logController.writeSimpleLog("SYSTEM: READ JSON", "Error! Json do not pass to a class" + e.getMessage(), true);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                System.err.println("Problem with Communication Server" + e.getMessage());
+                try {
+                    clientSocket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }finally {
+                try {
+                    clientSocket.close();
+                } catch (IOException ioe) {
+                    System.err.println("Problem with Communication Server" + ioe.getMessage());
+                    try {
+                        clientSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        public boolean isActive() {
+            try {
+                return !clientSocket.isClosed() && clientSocket.getInputStream().available() >= 0;
+            } catch (IOException e) {
+                return false;
+            }
+        }
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public void close() {
+            try {
+                active = false;
+                clientSocket.close();
+                System.out.println("Conexão encerrada: " + clientId);
+            } catch (IOException e) {
+                System.err.println("Erro ao fechar conexão: " + e.getMessage());
+            }
+        }
+
+
+    }
+    
+
+    public static void main(String[] args) throws IOException { 
+        try (FileWriter writer = new FileWriter("log.txt")) {
+            writer.write("");
+        }
+
+        ServerSocket serverSocket = null; 
+
+        try { 
+             serverSocket = new ServerSocket(port); 
+             System.out.println ("Connection Socket Created");
+             try { 
+                System.out.println ("Waiting for Connection");
+                executor = Executors.newScheduledThreadPool(1);
+                    executor.scheduleAtFixedRate(() -> {
+                        System.out.println("Verificando conexões inativas...");
+                        synchronized (clientHandlers) {
+                            clientHandlers.removeIf(client -> {
+                                if (!client.isActive()) {
+                                    System.out.println("Encerrando conexão inativa: " + client.getClientId());
+                                    client.close(); // Fecha a conexão
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                    }, 0, 1, TimeUnit.MINUTES);
+
+                while (serverContinue)
+                     {
+                      serverSocket.setSoTimeout(10000);
+                    //   System.out.println ("Waiting for Connection");
+                      try {
+                            Socket clienSocket = serverSocket.accept();
+                            ClientHandler clientHandler = new ClientHandler(clienSocket);
+                            synchronized(clientHandlers){
+                                clientHandlers.add(clientHandler);
+                            }
+                            try {
+                                new Thread(clientHandler).start();
+                            } catch (Exception e) {
+                                System.err.println("Problem with Communication Server" + e.getMessage());
+                                Thread.currentThread().interrupt();
+                            }
+                          }
+                      catch (SocketTimeoutException ste)
+                          {
+                        //    System.out.println ("Timeout Occurred");
+                          }
+                     }
+                 } 
+             catch (IOException e) 
+                 { 
+                  System.err.println("Accept failed."); 
+                  System.exit(1); 
+                 } 
+            } 
+        catch (IOException e) 
+            { 
+             System.err.println("Could not listen on port: " + port + e.getMessage()); 
+             System.exit(1); 
+            } 
+        finally
+            {
+             try {
+                  System.out.println ("Closing Server Connection Socket");
+                  serverSocket.close(); 
+                 }
+             catch (IOException e)
+                 { 
+                  System.err.println("Could not close port: " + port); 
+                  System.exit(1); 
+                 } 
+            }
+       }
+}
